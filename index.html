@@ -759,35 +759,49 @@ class InfinityEngine {
             WORLD_STATE: 'world_state'
         };
         
-        // Initialize on construction
-        this.initialize();
+        // DON'T auto-initialize in constructor
+        console.log('🎮 Infinity Engine constructed');
     }
     
     async initialize() {
         try {
+            console.log('🚀 Starting initialization...');
+            
             // Check for existing API key
             this.apiKey = this.getFromStorage(this.STORAGE_KEYS.API_KEY);
+            console.log('API Key found:', !!this.apiKey);
             
-            if (!this.apiKey) {
+            // Always hide loading after a delay to prevent infinite loading
+            setTimeout(() => {
                 this.hideLoading();
-                this.showApiKeyPrompt();
-                return;
-            }
-            
-            // Check for existing story
-            this.currentStory = this.getFromStorage(this.STORAGE_KEYS.CURRENT_STORY);
-            
-            if (this.currentStory) {
-                await this.resumeStory();
-            } else {
-                await this.startNewStory();
-            }
-            
-            this.hideLoading();
+                
+                if (!this.apiKey) {
+                    console.log('No API key, showing prompt...');
+                    this.showApiKeyPrompt();
+                    return;
+                }
+                
+                // Check for existing story
+                this.currentStory = this.getFromStorage(this.STORAGE_KEYS.CURRENT_STORY);
+                
+                if (this.currentStory) {
+                    console.log('Resuming existing story...');
+                    this.resumeStory();
+                } else {
+                    console.log('Starting new story...');
+                    this.startNewStory();
+                }
+            }, 1500); // Always hide loading after 1.5 seconds
             
         } catch (error) {
-            console.error('Initialization failed:', error);
-            this.showError('Failed to initialize. Please refresh the page.');
+            console.error('❌ Initialization failed:', error);
+            // Force hide loading and show error
+            setTimeout(() => {
+                this.hideLoading();
+                this.showError('Failed to initialize. Please refresh the page.');
+                // Show API key prompt as fallback
+                this.showApiKeyPrompt();
+            }, 500);
         }
     }
     
@@ -852,6 +866,9 @@ class InfinityEngine {
                        class="api-key-link">
                         Get your API key from OpenAI →
                     </a>
+                </p>
+                <p style="text-align: center; margin-top: 16px; font-size: 14px; color: #666;">
+                    Using GPT-4.1 mini: ~$0.0003 per scene (1000 scenes = $0.30)
                 </p>
             </div>
         `;
@@ -1099,36 +1116,79 @@ class InfinityEngine {
             {
                 role: 'system',
                 content: `You are a masterful storyteller creating an immersive fantasy narrative. 
-Write rich, detailed scenes with multiple paragraphs.
+Your responses must be RICH, DETAILED, and EXTENSIVE.
 
-IMPORTANT: Write 3-5 substantial paragraphs for each section.
+CRITICAL REQUIREMENTS:
+- Each section must be AT LEAST 3-5 paragraphs
+- Total response should be 800-1200 words minimum
+- Use vivid, sensory language throughout
+- Show don't tell - describe actions in cinematic detail
 
 Structure your response as follows:
 
 [Setting]
-Multiple paragraphs describing the environment with rich sensory details. Include sounds, smells, textures, lighting, and magical elements.
+AT LEAST 3-4 paragraphs describing the environment. Include:
+- Visual details: colors, lighting, shadows, movement
+- Sounds: both obvious and subtle background noises  
+- Smells and tastes in the air
+- Textures and temperatures
+- Magical elements woven naturally throughout
+- The overall atmosphere and how it makes one feel
 
 [Action]
-Multiple paragraphs showing what happens. SHOW the player's actions in detail, don't just skip to results. Describe movements, reactions, and consequences.
+AT LEAST 4-5 paragraphs showing what happens. CRITICAL:
+- Show the player's action happening step-by-step
+- Describe physical movements, facial expressions, body language
+- Include environmental reactions to the action
+- Show consequences unfolding in real-time
+- Build tension through pacing
+- Use all five senses in the description
 
 [Characters]
-Describe any NPCs present, their appearance, mannerisms, and current actions.
+AT LEAST 2-3 paragraphs for each character present:
+- Detailed physical appearance including clothing and equipment
+- Body language and mannerisms
+- Facial expressions and micro-expressions
+- How they move and occupy space
+- Their emotional state shown through actions
+- Unique quirks or habits
 
 [Dialogue]
-Format: CharacterName: (emotion) "What they say."
-Make dialogue natural and revealing of character.
+Natural, character-revealing conversation. Format: CharacterName: (specific emotion) "What they say."
+- Make dialogue feel real and unscripted
+- Include pauses, stutters, interruptions
+- Show personality through speech patterns
+- Use subtext - what they don't say matters
 
 [Options]
-Present exactly 4 distinct choices that lead in different directions. Make each choice meaningful and different from the others. NEVER repeat similar options.
+Present exactly 4 distinct choices that:
+- Lead in completely different narrative directions
+- Are detailed and specific (not generic)
+- Reflect the character's class abilities
+- Include at least one creative/unexpected option
+- NEVER repeat similar choices
 
 [Hook]
-A compelling cliffhanger or revelation that creates anticipation.
+A compelling 1-2 paragraph cliffhanger that:
+- Introduces a new mystery or revelation
+- Creates urgent tension
+- Hints at greater dangers or opportunities
+- Makes it impossible not to continue
 
 Current protagonist: ${character.name} the ${character.class} (${character.classDescription})`
             },
             {
                 role: 'user',
-                content: `Begin an epic narrative. ${character.name} the ${character.class} awakens in a mysterious location. Create a rich, atmospheric opening with at least 3-4 paragraphs of description. Introduce an intriguing character who offers the first choices. Make the scene detailed and immersive.`
+                content: `Begin an epic narrative. ${character.name} the ${character.class} awakens in a mysterious location. 
+
+IMPORTANT: Create an extremely rich, cinematic opening scene with:
+- At least 4-5 paragraphs describing the setting with all five senses
+- 4-5 paragraphs showing ${character.name} awakening and taking their first actions
+- Introduce an intriguing character with 2-3 paragraphs of detailed description
+- Natural dialogue that reveals character and builds intrigue
+- 4 distinct choices that each lead in completely different directions
+
+Make this opening unforgettable - paint every detail, every sensation, every emotion. This is the beginning of an infinite saga.`
             }
         ];
         
@@ -1156,41 +1216,46 @@ Current protagonist: ${character.name} the ${character.class} (${character.class
         this.isProcessing = true;
         this.showProcessing('Continuing your story...');
         
-        // Build context with memory
-        const recentScenes = this.getRecentScenes(3);
+        // Build context with MASSIVE memory
+        const recentScenes = this.getRecentScenes(30); // 30 scenes instead of 3!
         const contextSummary = this.buildContextSummary(recentScenes);
         
         const messages = [
             {
                 role: 'system',
                 content: `You are a masterful storyteller creating an immersive fantasy narrative. 
-Write rich, detailed scenes with multiple paragraphs.
+Your responses must be RICH, DETAILED, and EXTENSIVE - at least 800-1200 words total.
 
-IMPORTANT: 
-- Write 3-5 substantial paragraphs for each section
-- SHOW the player's chosen action happening in detail
-- Don't skip to the aftermath - describe the action itself
-- Make each option unique - never repeat similar choices
+CRITICAL REQUIREMENTS:
+- Each section must be AT LEAST 3-5 paragraphs
+- Show the chosen action happening in CINEMATIC DETAIL
+- Use all five senses in your descriptions
+- Build tension through pacing and detail
 
 Structure your response as follows:
 
 [Setting]
-Multiple paragraphs with rich sensory details.
+AT LEAST 3-4 paragraphs of rich environmental description. Paint the scene like a movie.
 
 [Action]
-Multiple paragraphs showing EXACTLY what happens when the player takes their chosen action. Describe it step by step.
+AT LEAST 5-6 paragraphs showing the chosen action. THIS IS CRITICAL:
+- First paragraph: Show the character beginning the action
+- Next paragraphs: Detail every step, movement, and reaction
+- Show environmental changes and NPC responses
+- Build to a climactic moment
+- Conclude with immediate consequences
 
 [Characters]
-NPCs present and their reactions.
+AT LEAST 2-3 paragraphs per character, showing their full presence.
 
 [Dialogue]
-CharacterName: (emotion) "What they say."
+Natural conversation with subtext. Format: Name: (specific emotion) "Dialogue"
 
 [Options]
-4 distinct choices that are ALL different from each other.
+4 completely distinct choices - each leading somewhere different.
 
 [Hook]
-A compelling cliffhanger.
+1-2 paragraphs of compelling cliffhanger.
 
 Protagonist: ${this.currentStory.character.name} the ${this.currentStory.character.class}
 Recent context: ${contextSummary}`
@@ -1233,20 +1298,44 @@ IMPORTANT: Start by showing this action happening in detail. Describe ${this.cur
         this.isProcessing = true;
         this.showProcessing('Weaving your action into the story...');
         
-        const recentScenes = this.getRecentScenes(3);
+        const recentScenes = this.getRecentScenes(30); // 30 scenes instead of 3!
         const contextSummary = this.buildContextSummary(recentScenes);
         
         const messages = [
             {
                 role: 'system',
                 content: `You are a masterful storyteller. The player wants to take a custom action.
+Your response must be RICH, DETAILED, and at least 800-1200 words total.
 
-IMPORTANT:
-- Show the action happening in detail (3-4 paragraphs minimum)
+CRITICAL REQUIREMENTS:
+- Show the attempted action in extreme detail (4-5 paragraphs minimum)
 - If the action seems impossible, show the attempt and realistic consequences
-- Maintain narrative consistency
+- Use cinematic description with all five senses
+- Build dramatic tension
 
-Use the same structure: [Setting], [Action], [Characters], [Dialogue], [Options], [Hook]
+Structure your response:
+
+[Setting]
+3-4 paragraphs of rich environmental context for the action.
+
+[Action]
+5-6 paragraphs showing the custom action:
+- First paragraph: The character prepares and begins
+- Next 3-4 paragraphs: Step-by-step execution with vivid detail
+- Final paragraph: Immediate results and reactions
+Show EVERYTHING - movements, expressions, environmental changes, sounds, sensations.
+
+[Characters]
+2-3 paragraphs per character showing their full reactions.
+
+[Dialogue]
+Natural responses to the action. Format: Name: (emotion) "Dialogue"
+
+[Options]
+4 new distinct choices arising from this action.
+
+[Hook]
+1-2 paragraph cliffhanger.
 
 Protagonist: ${this.currentStory.character.name} the ${this.currentStory.character.class}
 Context: ${contextSummary}`
@@ -1725,11 +1814,48 @@ Show ${this.currentStory.character.name} attempting this exact action. Describe 
 let app = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    app = new InfinityEngine();
+    console.log('🎮 DOM loaded, initializing Infinity Engine...');
+    
+    try {
+        app = new InfinityEngine();
+        
+        // Add to window for debugging
+        window.app = app;
+        
+        // Manually call initialize
+        app.initialize().catch(error => {
+            console.error('❌ Initialize failed:', error);
+            app.hideLoading();
+            app.showApiKeyPrompt();
+        });
+        
+        // Add a failsafe timeout
+        setTimeout(() => {
+            const loadingContainer = document.getElementById('loading-container');
+            if (loadingContainer && !loadingContainer.classList.contains('hidden')) {
+                console.log('⚠️ Loading timeout reached, forcing initialization...');
+                app.hideLoading();
+                app.showApiKeyPrompt();
+            }
+        }, 3000); // Force show something after 3 seconds
+        
+    } catch (error) {
+        console.error('❌ Failed to create app:', error);
+        // Force show error state
+        document.getElementById('loading-container').classList.add('hidden');
+        document.getElementById('app').classList.remove('hidden');
+        document.getElementById('content-container').innerHTML = `
+            <div style="text-align: center; padding: 50px;">
+                <h2 style="color: #ff453a;">Initialization Error</h2>
+                <p>Failed to start the Infinity Engine.</p>
+                <p style="color: #666; font-size: 14px;">${error.message}</p>
+                <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #0a84ff; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    Refresh Page
+                </button>
+            </div>
+        `;
+    }
 });
-
-// Make app globally accessible
-window.app = app;
     </script>
 </body>
 </html>
