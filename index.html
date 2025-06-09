@@ -7,28 +7,27 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     
-    <title>Virtue Seekers - PSP Edition</title>
+    <title>Infinity Engine RPG - PSP Anniversary Edition</title>
     
-    <!-- PSP-style Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- PSP Anniversary Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
         /* ================================
-           PSP AESTHETIC THEME
+           PSP DARK MINIMAL THEME
            ================================ */
         :root {
             --psp-black: #000000;
-            --psp-silver: #c0c0c0;
-            --psp-dark-silver: #808080;
-            --psp-screen-bg: #1a1a1a;
-            --psp-text: #ffffff;
-            --psp-highlight: #00ff00;
-            --psp-button-bg: #2a2a2a;
-            --psp-button-border: #404040;
-            --psp-x-button: #0099ff;
-            --psp-circle-button: #ff0066;
-            --psp-square-button: #ff00ff;
-            --psp-triangle-button: #00ff00;
+            --psp-dark: #0a0a0a;
+            --psp-gray-dark: #1a1a1a;
+            --psp-gray: #2a2a2a;
+            --psp-gray-light: #3a3a3a;
+            --psp-text: #c0c0c0;
+            --psp-text-bright: #ffffff;
+            --psp-accent: #4a90e2;  /* Single blue accent */
+            --psp-accent-dark: #357abd;
+            --psp-border: rgba(255, 255, 255, 0.1);
+            --controller-pattern: rgba(255, 255, 255, 0.01);
         }
 
         * {
@@ -40,10 +39,16 @@
             user-select: none;
         }
 
+        /* Allow text selection only for inputs */
+        input, textarea {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
         body {
             background: var(--psp-black);
             color: var(--psp-text);
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'Rajdhani', sans-serif;
             font-size: 16px;
             line-height: 1.6;
             min-height: 100vh;
@@ -51,69 +56,67 @@
             position: relative;
         }
 
-        /* PSP Screen Frame */
-        #psp-frame {
+        /* PSP Controller Pattern Background */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            padding: 20px;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, var(--controller-pattern) 35px, var(--controller-pattern) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, var(--controller-pattern) 35px, var(--controller-pattern) 70px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Main Container */
+        #main-container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* PSP Top Bar */
-        .psp-top-bar {
-            background: linear-gradient(90deg, var(--psp-dark-silver) 0%, var(--psp-silver) 50%, var(--psp-dark-silver) 100%);
-            height: 30px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            margin-bottom: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            color: var(--psp-black);
-            font-weight: 700;
+        /* PSP Anniversary Header */
+        .psp-header {
+            background: var(--psp-gray-dark);
+            padding: 1px 0;
+            margin-bottom: 20px;
         }
 
-        .battery-indicator {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .battery-bar {
-            width: 25px;
-            height: 12px;
-            border: 2px solid var(--psp-black);
-            border-radius: 2px;
-            position: relative;
+        .psp-header-inner {
             background: var(--psp-black);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--psp-border);
+            border-bottom: 1px solid var(--psp-border);
         }
 
-        .battery-fill {
-            position: absolute;
-            top: 1px;
-            left: 1px;
-            bottom: 1px;
-            right: 1px;
-            background: var(--psp-highlight);
-            border-radius: 1px;
+        .game-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            letter-spacing: 2px;
+            color: var(--psp-text);
         }
 
-        /* Main Screen Area */
+        .scene-counter {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: var(--psp-accent);
+        }
+
+        /* Game Screen */
         #game-screen {
             flex: 1;
-            background: var(--psp-screen-bg);
-            border: 3px solid var(--psp-dark-silver);
-            border-radius: 10px;
-            overflow-y: auto;
-            padding: 20px;
-            position: relative;
+            padding: 0 20px 120px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         /* Loading Screen */
@@ -123,7 +126,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: var(--psp-black);
+            background: var(--psp-pure-black);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -131,396 +134,520 @@
             z-index: 9999;
         }
 
-        .psp-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 48px;
-            font-weight: 900;
-            background: linear-gradient(180deg, var(--psp-silver) 0%, var(--psp-dark-silver) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .loading-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 60px;
+            color: var(--psp-text);
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 2px;
+            background: var(--psp-gray);
+            overflow: hidden;
+        }
+
+        .loading-fill {
+            height: 100%;
+            background: var(--psp-accent);
+            animation: loading 2s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Narrative Display Box */
+        .narrative-box {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--psp-border);
+            border-radius: 8px;
+            padding: 20px;
             margin-bottom: 20px;
-        }
-
-        .loading-text {
-            font-size: 18px;
-            color: var(--psp-highlight);
-            animation: blink 1s ease-in-out infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            position: relative;
+            backdrop-filter: blur(10px);
         }
 
         /* Environmental Description */
         .environment-description {
-            border-left: 3px solid var(--psp-highlight);
-            padding-left: 15px;
-            margin-bottom: 20px;
-            color: var(--psp-silver);
             font-style: italic;
+            color: var(--psp-text);
+            margin-bottom: 15px;
+            font-size: 18px;
+            line-height: 1.5;
+            padding-left: 15px;
+            border-left: 2px solid var(--psp-accent);
         }
 
         /* Character Positions */
         .character-positions {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--psp-button-border);
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--psp-gray-light);
+            padding: 10px 15px;
+            margin-bottom: 15px;
         }
 
         .position-entry {
-            margin: 8px 0;
-            display: flex;
-            gap: 10px;
+            margin: 5px 0;
+            font-weight: 500;
         }
 
         .position-character {
-            color: var(--psp-highlight);
-            font-weight: bold;
-            min-width: 100px;
+            color: var(--psp-accent);
+            font-weight: 700;
         }
 
-        /* Dialogue */
+        /* Dialogue Section */
         .dialogue-section {
             margin: 20px 0;
         }
 
         .dialogue-line {
             margin: 15px 0;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .dialogue-line::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--psp-gray-light);
         }
 
         .character-name {
-            color: var(--psp-x-button);
-            font-weight: bold;
+            color: var(--psp-accent);
+            font-weight: 700;
             text-transform: uppercase;
+            font-size: 14px;
         }
 
         .character-tone {
-            color: var(--psp-dark-silver);
-            font-size: 0.9em;
+            color: var(--psp-gray-light);
+            font-size: 12px;
+            font-style: italic;
         }
 
         .dialogue-text {
             display: block;
             margin-top: 5px;
-            padding-left: 20px;
+            color: var(--psp-text);
+            font-size: 17px;
         }
 
-        /* PSP-style Choice Buttons */
+        /* Scene Hook */
+        .scene-hook {
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.02));
+            border-top: 1px solid var(--psp-border);
+            margin-top: 20px;
+            padding: 15px;
+            text-align: center;
+            font-style: italic;
+            color: var(--psp-text);
+            font-size: 18px;
+        }
+
+        /* PSP Button Choices */
         .choice-container {
             margin: 25px 0;
+        }
+
+        .choice-wrapper {
+            position: relative;
+            margin: 15px 0;
         }
 
         .choice-button {
             display: block;
             width: 100%;
-            padding: 15px 20px;
-            margin: 12px 0;
-            background: linear-gradient(180deg, #3a3a3a 0%, #1a1a1a 100%);
-            border: 2px solid var(--psp-button-border);
-            border-radius: 25px;
-            color: var(--psp-text);
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 16px;
+            padding: 18px 60px 18px 20px;
+            background: var(--psp-gray);
+            border: none;
+            border-radius: 8px;
+            color: var(--psp-white);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 17px;
+            font-weight: 500;
             text-align: left;
             cursor: pointer;
+            transition: all 0.2s;
             position: relative;
             overflow: hidden;
-            transition: all 0.2s;
         }
 
-        .choice-button:before {
+        .choice-button::before {
             content: '';
             position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--psp-x-button);
-            opacity: 0.7;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
         }
 
-        .choice-button:nth-child(2):before { background: var(--psp-circle-button); }
-        .choice-button:nth-child(3):before { background: var(--psp-square-button); }
-        .choice-button:nth-child(4):before { background: var(--psp-triangle-button); }
+        .choice-button:hover::before {
+            left: 100%;
+        }
 
         .choice-button:hover {
-            border-color: var(--psp-highlight);
             transform: translateX(5px);
+            background: var(--psp-light-gray);
         }
 
-        .choice-button:active {
-            transform: translateX(5px) scale(0.98);
-        }
-
-        .choice-number {
-            color: var(--psp-highlight);
+        /* PSP Button Icons */
+        .psp-button-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
-            margin-right: 10px;
+            font-size: 18px;
+            background: var(--psp-gray-light);
+            color: var(--psp-text);
+            border: 1px solid var(--psp-border);
         }
 
-        /* Custom Action */
-        .custom-action {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--psp-button-border);
+        .choice-wrapper:nth-child(1) .psp-button-icon { background: var(--psp-accent); color: white; }
+        .choice-wrapper:nth-child(2) .psp-button-icon { background: var(--psp-gray-light); }
+        .choice-wrapper:nth-child(3) .psp-button-icon { background: var(--psp-gray); }
+        .choice-wrapper:nth-child(4) .psp-button-icon { background: var(--psp-gray-dark); }
+
+        /* Custom Action Section */
+        .custom-action-section {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--psp-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
         }
 
-        .custom-label {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--psp-dark-silver);
-            font-size: 14px;
+        .custom-action-label {
+            color: var(--psp-text);
+            font-weight: 700;
             text-transform: uppercase;
+            margin-bottom: 10px;
+            font-size: 14px;
+            letter-spacing: 1px;
         }
 
-        .custom-input-wrapper {
+        .custom-action-wrapper {
             display: flex;
             gap: 10px;
+            margin-bottom: 15px;
         }
 
-        .custom-input {
+        .custom-action-input {
             flex: 1;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid var(--psp-button-border);
-            border-radius: 5px;
-            color: var(--psp-text);
-            font-family: 'Share Tech Mono', monospace;
+            padding: 12px 15px;
+            background: var(--psp-black);
+            border: 1px solid var(--psp-gray-light);
+            border-radius: 6px;
+            color: var(--psp-text-bright);
+            font-family: 'Rajdhani', sans-serif;
             font-size: 16px;
+            transition: border-color 0.2s;
         }
 
-        .custom-input:focus {
+        .custom-action-input:focus {
             outline: none;
-            border-color: var(--psp-highlight);
+            border-color: var(--psp-accent);
         }
 
-        .custom-submit {
-            padding: 12px 24px;
-            background: linear-gradient(180deg, var(--psp-highlight) 0%, #00cc00 100%);
-            border: none;
-            border-radius: 20px;
-            color: var(--psp-black);
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.2s;
-        }
-
-        .custom-submit:hover {
-            transform: scale(1.05);
-        }
-
-        /* Scene Hook */
-        .scene-hook {
-            margin-top: 30px;
-            padding: 20px;
-            background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 0, 0.1) 100%);
-            border-top: 1px solid var(--psp-highlight);
-            text-align: center;
+        .custom-action-input::placeholder {
+            color: var(--psp-gray-light);
             font-style: italic;
-            color: var(--psp-silver);
+        }
+
+        .submit-button {
+            padding: 12px 24px;
+            background: var(--psp-accent);
+            border: none;
+            border-radius: 6px;
+            color: var(--psp-text-bright);
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .submit-button:hover {
+            background: var(--psp-accent-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Regenerate Button */
+        .regenerate-button {
+            width: 100%;
+            padding: 12px;
+            background: var(--psp-gray);
+            border: 1px solid var(--psp-gray-light);
+            border-radius: 6px;
+            color: var(--psp-text);
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .regenerate-button:hover {
+            background: var(--psp-gray-light);
+            border-color: var(--psp-accent);
+        }
+
+        .regenerate-button::before {
+            content: '↻';
+            font-size: 18px;
         }
 
         /* Character Creation */
-        .character-creation {
+        .creation-screen {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
         }
 
         .creation-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            color: var(--psp-highlight);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
             text-align: center;
             margin-bottom: 30px;
+            color: var(--psp-text);
             text-transform: uppercase;
+            letter-spacing: 3px;
         }
 
         .creation-input {
             width: 100%;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid var(--psp-button-border);
-            border-radius: 5px;
-            color: var(--psp-text);
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 16px;
-            margin-bottom: 15px;
+            padding: 15px;
+            background: var(--psp-black);
+            border: 1px solid var(--psp-gray-light);
+            border-radius: 8px;
+            color: var(--psp-text-bright);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            margin-bottom: 20px;
+            transition: border-color 0.2s;
         }
 
-        .continue-button {
-            width: 100%;
+        .creation-input:focus {
+            outline: none;
+            border-color: var(--psp-accent);
+        }
+
+        /* Dynamic Class Selection */
+        .class-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .class-option {
+            background: var(--psp-gray);
+            border: 2px solid transparent;
+            border-radius: 8px;
             padding: 15px;
-            background: linear-gradient(180deg, var(--psp-x-button) 0%, #0066cc 100%);
-            border: none;
-            border-radius: 25px;
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
-            font-weight: bold;
             cursor: pointer;
-            text-transform: uppercase;
             transition: all 0.2s;
         }
 
-        .continue-button:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 20px rgba(0, 153, 255, 0.5);
+        .class-option:hover {
+            border-color: var(--psp-yellow);
+            transform: translateY(-2px);
         }
 
-        /* API Key Screen */
-        .api-key-prompt {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 30px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border: 2px solid var(--psp-button-border);
-            border-radius: 10px;
+        .class-option.selected {
+            border-color: var(--psp-green);
+            background: rgba(0, 255, 0, 0.1);
         }
 
-        .api-key-input {
-            font-family: monospace;
-            letter-spacing: 1px;
+        .class-name {
+            font-weight: 700;
+            color: var(--psp-yellow);
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .class-description {
+            color: var(--psp-light-gray);
+            font-size: 14px;
+            line-height: 1.4;
         }
 
         /* Messages */
         .message {
-            padding: 12px 20px;
-            border-radius: 5px;
+            padding: 15px 20px;
+            border-radius: 6px;
             margin: 15px 0;
-            font-size: 14px;
-            text-transform: uppercase;
+            font-weight: 500;
+            animation: slideIn 0.3s ease-out;
+            border: 1px solid;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message.error {
-            background: rgba(255, 0, 102, 0.2);
-            border: 1px solid var(--psp-circle-button);
-            color: var(--psp-circle-button);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--psp-gray-light);
+            color: var(--psp-text);
         }
 
         .message.success {
-            background: rgba(0, 255, 0, 0.2);
-            border: 1px solid var(--psp-highlight);
-            color: var(--psp-highlight);
+            background: rgba(74, 144, 226, 0.1);
+            border-color: var(--psp-accent);
+            color: var(--psp-accent);
         }
 
-        /* Setup Error Screen */
-        .setup-error {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 30px;
-            background: rgba(255, 0, 102, 0.1);
-            border: 2px solid var(--psp-circle-button);
-            border-radius: 10px;
+        .message.info {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--psp-gray-light);
+            color: var(--psp-text);
+        }
+
+        /* Processing Overlay */
+        .processing-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+        }
+
+        .processing-content {
             text-align: center;
         }
 
-        .setup-error h2 {
-            color: var(--psp-circle-button);
-            margin-bottom: 20px;
+        .processing-spinner {
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--psp-gray);
+            border-top: 2px solid var(--psp-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
-        .setup-error p {
-            margin: 10px 0;
-            line-height: 1.8;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .setup-error a {
-            color: var(--psp-highlight);
-            text-decoration: none;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        /* Mobile optimizations */
-        @media (max-width: 480px) {
-            body { font-size: 14px; }
-            .psp-logo { font-size: 36px; }
-            .creation-title { font-size: 20px; }
-            #psp-frame { padding: 10px; }
+        /* Mobile Optimizations */
+        @media (max-width: 600px) {
+            .game-title { font-size: 24px; }
+            .loading-logo { font-size: 48px; }
+            .creation-title { font-size: 30px; }
+            #game-screen { padding: 0 15px 100px; }
+            .narrative-box { padding: 15px; }
         }
 
         /* Hide scrollbar but keep functionality */
-        #game-screen::-webkit-scrollbar {
-            width: 0px;
-            background: transparent;
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        *::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Ensure elements aren't hidden */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
     <!-- Loading Screen -->
     <div id="loading-screen">
-        <div class="psp-logo">VIRTUE SEEKERS</div>
-        <div class="loading-text">MEMORY PALACE INITIALIZING...</div>
+        <div class="loading-logo">INFINITY</div>
+        <div class="loading-bar">
+            <div class="loading-fill"></div>
+        </div>
     </div>
 
-    <!-- Main PSP Frame -->
-    <div id="psp-frame" class="hidden">
-        <!-- PSP Top Bar -->
-        <div class="psp-top-bar">
-            <div class="memory-status">MEMORY: <span id="memory-percent">100%</span></div>
-            <div>SCENE <span id="scene-counter">1</span></div>
-            <div class="battery-indicator">
-                <div class="battery-bar">
-                    <div class="battery-fill"></div>
-                </div>
+    <!-- Main Container -->
+    <div id="main-container" class="hidden">
+        <!-- PSP Anniversary Header -->
+        <div class="psp-header">
+            <div class="psp-header-inner">
+                <div class="game-title">INFINITY ENGINE</div>
+                <div class="scene-counter">SCENE <span id="scene-count">1</span></div>
             </div>
         </div>
 
         <!-- Game Screen -->
         <div id="game-screen">
-            <!-- Dynamic content goes here -->
+            <!-- Dynamic content will be inserted here -->
         </div>
     </div>
 
     <script>
 // ============================================
-// COMPLETE VIRTUE SEEKERS ENGINE - PSP EDITION
+// INFINITY ENGINE RPG - PSP ANNIVERSARY EDITION
 // ============================================
 
 // Global app instance
 let app = null;
 
 // ============================================
-// MEMORY PALACE - Using localStorage fallback
+// MEMORY PALACE - Persistent Storage System
 // ============================================
 class MemoryPalace {
     constructor() {
         this.storageAvailable = false;
         this.currentStory = null;
-        this.memoryPrefix = 'vs_';
+        this.memoryPrefix = 'infinity_';
+        this.lastContext = null;
     }
 
     async initialize() {
-        // Check if we can use localStorage
+        // Check storage availability
         try {
             const test = 'test';
             localStorage.setItem(test, test);
             localStorage.removeItem(test);
             this.storageAvailable = true;
-            console.log('Using localStorage for memory');
+            console.log('Memory Palace: localStorage available');
         } catch (e) {
-            console.log('No storage available - using session memory only');
+            console.log('Memory Palace: Using session memory');
             this.storageAvailable = false;
-            // Use in-memory storage
-            this.memoryStore = {
-                stories: [],
-                scenes: [],
-                characters: {},
-                settings: {}
-            };
+            this.memoryStore = {};
         }
     }
 
-    // Storage abstraction methods
     setItem(key, value) {
         const fullKey = this.memoryPrefix + key;
         if (this.storageAvailable) {
@@ -546,16 +673,12 @@ class MemoryPalace {
             id: `story_${Date.now()}`,
             created: new Date().toISOString(),
             protagonist: characterData,
-            sceneCount: 0
+            sceneCount: 0,
+            lastContext: null
         };
         
         this.currentStory = story;
         this.setItem('current_story', story);
-        
-        // Save to story list
-        const stories = this.getItem('stories') || [];
-        stories.push(story);
-        this.setItem('stories', stories);
         
         return story;
     }
@@ -569,20 +692,19 @@ class MemoryPalace {
         // Save scene
         const scenes = this.getItem('scenes') || [];
         scenes.push(scene);
+        
+        // Keep only last 50 scenes in storage
+        if (scenes.length > 50) {
+            scenes.shift();
+        }
+        
         this.setItem('scenes', scenes);
         
         // Update story
         this.currentStory.sceneCount++;
         this.currentStory.lastScene = scene;
+        this.currentStory.lastContext = this.lastContext;
         this.setItem('current_story', this.currentStory);
-        
-        // Update story in list
-        const stories = this.getItem('stories') || [];
-        const storyIndex = stories.findIndex(s => s.id === this.currentStory.id);
-        if (storyIndex !== -1) {
-            stories[storyIndex] = this.currentStory;
-            this.setItem('stories', stories);
-        }
     }
 
     async saveApiKey(apiKey) {
@@ -595,43 +717,37 @@ class MemoryPalace {
 
     async getCurrentStory() {
         if (this.currentStory) return this.currentStory;
-        
         this.currentStory = this.getItem('current_story');
         return this.currentStory;
     }
 
     async getRecentScenes(count = 5) {
         if (!this.currentStory) return [];
-        
         const scenes = this.getItem('scenes') || [];
-        return scenes
-            .filter(s => s.storyId === this.currentStory.id)
-            .slice(-count);
+        return scenes.slice(-count);
     }
 
-    async updateCharacter(name, data) {
-        const characters = this.getItem('characters') || {};
-        characters[name.toLowerCase()] = {
-            name: name,
-            ...data,
-            lastUpdated: Date.now()
-        };
-        this.setItem('characters', characters);
+    saveLastContext(context) {
+        this.lastContext = context;
+        if (this.currentStory) {
+            this.currentStory.lastContext = context;
+            this.setItem('current_story', this.currentStory);
+        }
     }
 
-    async getCharacter(name) {
-        const characters = this.getItem('characters') || {};
-        return characters[name.toLowerCase()];
+    getLastContext() {
+        return this.lastContext || this.currentStory?.lastContext || null;
     }
 }
 
 // ============================================
-// NARRATIVE ENGINE
+// NARRATIVE ENGINE - GPT Integration
 // ============================================
 class NarrativeEngine {
     constructor() {
         this.apiKey = null;
         this.apiUrl = 'https://api.openai.com/v1/chat/completions';
+        this.lastMessages = null;
     }
 
     setApiKey(key) {
@@ -639,33 +755,78 @@ class NarrativeEngine {
     }
 
     async generateScene(context) {
+        const messages = this.buildMessages(context);
+        this.lastMessages = messages; // Save for regeneration
+        
+        try {
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo',
+                    messages: messages,
+                    temperature: 0.8,
+                    max_tokens: 1000
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error?.message || 'API request failed');
+            }
+
+            const data = await response.json();
+            return data.choices[0].message.content;
+        } catch (error) {
+            console.error('GPT error:', error);
+            throw error;
+        }
+    }
+
+    async regenerateScene() {
+        if (!this.lastMessages) {
+            throw new Error('No previous scene to regenerate');
+        }
+        
+        try {
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo',
+                    messages: this.lastMessages,
+                    temperature: 0.9, // Slightly higher for more variation
+                    max_tokens: 1000
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Regeneration failed');
+            }
+
+            const data = await response.json();
+            return data.choices[0].message.content;
+        } catch (error) {
+            console.error('Regeneration error:', error);
+            throw error;
+        }
+    }
+
+    async generateClasses() {
         const messages = [
             {
                 role: 'system',
-                content: `You are a Fantasy RPG Game Master. EVERY response must include these sections:
-
-[Environmental Description]
-2-3 sentences with sensory details and magical atmosphere.
-
-[Character Positions]
-Where each character is and what they're doing.
-
-[Dialogue]
-Format: Name: (emotion) "What they say."
-
-[Choices]
-2-5 numbered options that lead to different outcomes.
-
-[Scene Hook]
-1-2 sentences creating anticipation.
-
-Current protagonist: ${context.protagonist?.name || 'Unknown'}
-Class: ${context.protagonist?.class || 'Unknown'}
-Recent events: ${context.recentEvents || 'Beginning of story'}`
+                content: 'You are a fantasy RPG class generator. Generate exactly 6 unique and creative character classes with brief descriptions. Format as JSON array with "name" and "description" fields. Make them unique and interesting, not generic fantasy classes.'
             },
             {
                 role: 'user',
-                content: context.userInput
+                content: 'Generate 6 unique character classes for a narrative-focused fantasy RPG. Be creative and avoid standard classes like warrior or mage.'
             }
         ];
 
@@ -679,95 +840,182 @@ Recent events: ${context.recentEvents || 'Beginning of story'}`
                 body: JSON.stringify({
                     model: 'gpt-3.5-turbo',
                     messages: messages,
-                    temperature: 0.8,
-                    max_tokens: 800
+                    temperature: 0.9,
+                    max_tokens: 500
                 })
             });
 
             if (!response.ok) {
-                throw new Error('API request failed');
+                throw new Error('Failed to generate classes');
             }
 
             const data = await response.json();
-            return data.choices[0].message.content;
+            const content = data.choices[0].message.content;
+            
+            // Try to parse JSON from response
+            try {
+                const jsonMatch = content.match(/\[[\s\S]*\]/);
+                if (jsonMatch) {
+                    return JSON.parse(jsonMatch[0]);
+                }
+            } catch (e) {
+                console.error('Failed to parse classes JSON');
+            }
+            
+            // Fallback classes if generation fails
+            return this.getFallbackClasses();
         } catch (error) {
-            console.error('GPT error:', error);
-            throw error;
+            console.error('Class generation error:', error);
+            return this.getFallbackClasses();
         }
+    }
+
+    getFallbackClasses() {
+        return [
+            { name: "Voidweaver", description: "Manipulates the space between realities" },
+            { name: "Chronothief", description: "Steals moments from the flow of time" },
+            { name: "Soulwright", description: "Forges destinies from raw spirit essence" },
+            { name: "Gloomcaster", description: "Commands shadows and forgotten sorrows" },
+            { name: "Starwhisper", description: "Speaks the ancient language of cosmos" },
+            { name: "Thornheart", description: "Channels nature's beautiful cruelty" }
+        ];
+    }
+
+    buildMessages(context) {
+        const messages = [
+            {
+                role: 'system',
+                content: `You are a collaborative fantasy narrative engine. Create rich, immersive scenes following this EXACT format:
+
+[Environmental Description]
+2-3 sentences of vivid sensory details. Include magical atmosphere, sounds, smells, and visual elements.
+
+[Character Positions]
+List each character present and describe where they are and what they're doing.
+
+[Dialogue]
+Format EXACTLY as: CharacterName: (emotion/tone) "What they say."
+Make dialogue natural and character-appropriate.
+
+[Choices]
+Present exactly 4 choices:
+1. [Action Type]: Specific action description
+2. [Action Type]: Different approach  
+3. [Action Type]: Creative/unexpected option
+4. [Action Type]: Character-specific option based on their class/personality
+
+[Scene Hook]
+1-2 sentences that create tension or anticipation for what comes next.
+
+Current protagonist: ${context.protagonist?.name || 'Unknown'} the ${context.protagonist?.class || 'Unknown'}
+${context.recentEvents ? `Recent events: ${context.recentEvents}` : ''}
+${context.customContext || ''}`
+            }
+        ];
+
+        if (context.previousSummary) {
+            messages.push({
+                role: 'assistant',
+                content: context.previousSummary
+            });
+        }
+
+        messages.push({
+            role: 'user',
+            content: context.userInput
+        });
+
+        return messages;
     }
 }
 
 // ============================================
-// UI MANAGER
+// UI MANAGER - Interface Controller
 // ============================================
 class UIManager {
     constructor() {
         this.gameScreen = null;
         this.sceneCounter = null;
-        this.memoryPercent = null;
+        this.processingOverlay = null;
     }
 
     initialize() {
         this.gameScreen = document.getElementById('game-screen');
-        this.sceneCounter = document.getElementById('scene-counter');
-        this.memoryPercent = document.getElementById('memory-percent');
+        this.sceneCounter = document.getElementById('scene-count');
     }
 
     hideLoading() {
-        document.getElementById('loading-screen').style.display = 'none';
-        document.getElementById('psp-frame').classList.remove('hidden');
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('main-container').classList.remove('hidden');
+        }, 1500);
     }
 
-    showSetupError() {
-        this.gameScreen.innerHTML = `
-            <div class="setup-error">
-                <h2>⚠️ SETUP REQUIRED ⚠️</h2>
-                <p>This game can't run directly from your computer!</p>
-                <p>You need to put it online first. Here's the easiest way:</p>
-                
-                <h3 style="color: #00ff00; margin: 20px 0;">Option 1: Netlify (30 seconds)</h3>
-                <ol style="text-align: left; margin: 0 auto; max-width: 400px;">
-                    <li>Save this file to your computer</li>
-                    <li>Go to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a></li>
-                    <li>Drag the file onto the page</li>
-                    <li>Get instant URL!</li>
-                </ol>
-                
-                <h3 style="color: #00ff00; margin: 20px 0;">Option 2: GitHub (5 minutes)</h3>
-                <p>Follow the guide in the instructions</p>
-                
-                <p style="margin-top: 30px; color: #ff0066;">
-                    This error happens because the game needs to save your progress,<br>
-                    which browsers don't allow for local files.
-                </p>
+    showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'message error';
+        errorDiv.textContent = message;
+        this.gameScreen.insertBefore(errorDiv, this.gameScreen.firstChild);
+        setTimeout(() => errorDiv.remove(), 5000);
+    }
+
+    showInfo(message) {
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'message info';
+        infoDiv.textContent = message;
+        this.gameScreen.insertBefore(infoDiv, this.gameScreen.firstChild);
+        setTimeout(() => infoDiv.remove(), 5000);
+    }
+
+    showProcessing(message = 'Weaving narrative threads...') {
+        this.processingOverlay = document.createElement('div');
+        this.processingOverlay.className = 'processing-overlay';
+        this.processingOverlay.innerHTML = `
+            <div class="processing-content">
+                <div class="processing-spinner"></div>
+                <div style="color: #ffcc00; font-size: 18px;">${message}</div>
             </div>
         `;
+        document.body.appendChild(this.processingOverlay);
+    }
+
+    hideProcessing() {
+        if (this.processingOverlay) {
+            this.processingOverlay.remove();
+            this.processingOverlay = null;
+        }
     }
 
     async showApiKeyPrompt() {
         this.gameScreen.innerHTML = `
-            <div class="api-key-prompt">
-                <h2 class="creation-title">OpenAI API Key Required</h2>
-                <p style="margin-bottom: 20px; color: #c0c0c0;">
-                    Enter your API key to power the narrative engine.
-                </p>
+            <div class="creation-screen">
+                <h1 class="creation-title">INITIALIZE NARRATIVE ENGINE</h1>
+                <div class="narrative-box" style="margin-bottom: 30px;">
+                    <p style="margin-bottom: 20px;">Enter your OpenAI API key to power the infinite narrative engine.</p>
+                    <p style="color: #666; font-size: 14px;">Your key is stored locally and never sent anywhere except OpenAI.</p>
+                </div>
                 <input type="password" 
                        id="api-key-input" 
-                       class="creation-input api-key-input" 
+                       class="creation-input" 
                        placeholder="sk-..."
                        autocomplete="off">
-                <button class="continue-button" onclick="app.submitApiKey()">
-                    Initialize Engine
+                <button class="submit-button" style="width: 100%; font-size: 18px;" onclick="app.submitApiKey()">
+                    ACTIVATE ENGINE
                 </button>
-                <p style="margin-top: 20px; font-size: 12px; text-align: center;">
+                <p style="margin-top: 20px; text-align: center;">
                     <a href="https://platform.openai.com/api-keys" 
                        target="_blank" 
-                       style="color: #00ff00;">
-                        Get API Key →
+                       style="color: #00ff00; text-decoration: none;">
+                        Get your API key from OpenAI →
                     </a>
                 </p>
             </div>
         `;
+        
+        // Focus input
+        setTimeout(() => {
+            document.getElementById('api-key-input')?.focus();
+        }, 100);
     }
 
     async showCharacterCreation() {
@@ -775,6 +1023,7 @@ class UIManager {
         
         // Name step
         await this.showNameStep(character);
+        // Class step with dynamic generation
         await this.showClassStep(character);
         
         return character;
@@ -783,57 +1032,104 @@ class UIManager {
     showNameStep(character) {
         return new Promise((resolve) => {
             this.gameScreen.innerHTML = `
-                <div class="character-creation">
-                    <h2 class="creation-title">Enter Your Name</h2>
+                <div class="creation-screen">
+                    <h1 class="creation-title">FORGE YOUR IDENTITY</h1>
+                    <div class="narrative-box">
+                        <p>Before the infinite narrative begins, you must have a name...</p>
+                    </div>
                     <input type="text" 
                            id="character-name" 
                            class="creation-input" 
-                           placeholder="Your name..."
-                           maxlength="20">
-                    <button class="continue-button" id="continue-name">
-                        Continue
+                           placeholder="Enter your name..."
+                           maxlength="30"
+                           autocomplete="off">
+                    <button class="submit-button" style="width: 100%; font-size: 18px;" id="continue-name">
+                        CONTINUE →
                     </button>
                 </div>
             `;
             
-            document.getElementById('continue-name').onclick = () => {
-                const name = document.getElementById('character-name').value.trim();
+            const input = document.getElementById('character-name');
+            const button = document.getElementById('continue-name');
+            
+            input.focus();
+            
+            const proceed = () => {
+                const name = input.value.trim();
                 if (name) {
                     character.name = name;
                     resolve();
+                } else {
+                    this.showError('A name is required to begin your journey');
                 }
+            };
+            
+            button.onclick = proceed;
+            input.onkeypress = (e) => {
+                if (e.key === 'Enter') proceed();
             };
         });
     }
 
-    showClassStep(character) {
+    async showClassStep(character) {
+        // Show loading while generating classes
+        this.showProcessing('Discovering unique paths...');
+        
+        const classes = await app.narrativeEngine.generateClasses();
+        
+        this.hideProcessing();
+        
         return new Promise((resolve) => {
-            const classes = [
-                { name: "Glass Sovereign", desc: "Master of crystalline magic" },
-                { name: "Ink Mage", desc: "Weaver of written reality" },
-                { name: "Thornkeeper", desc: "Guardian of ancient groves" },
-                { name: "Voidwhisper", desc: "Speaker to the spaces between" }
-            ];
-            
             this.gameScreen.innerHTML = `
-                <div class="character-creation">
-                    <h2 class="creation-title">Choose Your Path</h2>
-                    ${classes.map((c, i) => `
-                        <button class="choice-button" onclick="app.selectClass('${c.name}')">
-                            <span class="choice-number">${i+1}.</span>
-                            <strong>${c.name}</strong> - ${c.desc}
-                        </button>
-                    `).join('')}
+                <div class="creation-screen">
+                    <h1 class="creation-title">CHOOSE YOUR PATH</h1>
+                    <div class="narrative-box" style="margin-bottom: 20px;">
+                        <p>Select the class that resonates with your soul...</p>
+                    </div>
+                    <div class="class-grid">
+                        ${classes.map((cls, i) => `
+                            <div class="class-option" data-class="${cls.name}" data-index="${i}">
+                                <div class="class-name">${cls.name}</div>
+                                <div class="class-description">${cls.description}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="regenerate-button" onclick="app.regenerateClasses()">
+                        SHOW DIFFERENT CLASSES
+                    </button>
                 </div>
             `;
             
-            window.app.selectClass = (className) => {
-                character.class = className;
-                character.personality = "mysterious and determined";
-                character.appearance = "A figure of power and purpose";
-                character.background = "A seeker of ancient truths";
-                resolve();
-            };
+            let selectedClass = null;
+            
+            document.querySelectorAll('.class-option').forEach(option => {
+                option.onclick = () => {
+                    document.querySelectorAll('.class-option').forEach(o => 
+                        o.classList.remove('selected')
+                    );
+                    option.classList.add('selected');
+                    selectedClass = {
+                        name: option.dataset.class,
+                        description: classes[option.dataset.index].description
+                    };
+                    
+                    // Auto-proceed after selection
+                    setTimeout(() => {
+                        if (selectedClass) {
+                            character.class = selectedClass.name;
+                            character.classDescription = selectedClass.description;
+                            character.personality = "determined and mysterious";
+                            character.appearance = "A figure of purpose and power";
+                            character.background = "Your past is shrouded in mystery";
+                            resolve();
+                        }
+                    }, 500);
+                };
+            });
+            
+            // Store resolve function for regeneration
+            window._classResolve = resolve;
+            window._character = character;
         });
     }
 
@@ -841,19 +1137,23 @@ class UIManager {
         const parsed = this.parseScene(scene);
         
         this.gameScreen.innerHTML = `
-            ${this.formatEnvironment(parsed.environment)}
-            ${this.formatPositions(parsed.positions)}
-            ${this.formatDialogue(parsed.dialogue)}
+            <div class="narrative-box">
+                ${this.formatEnvironment(parsed.environment)}
+                ${this.formatPositions(parsed.positions)}
+                ${this.formatDialogue(parsed.dialogue)}
+                ${this.formatHook(parsed.hook)}
+            </div>
             ${this.formatChoices(parsed.choices)}
-            ${this.formatHook(parsed.hook)}
             ${this.formatCustomAction()}
         `;
         
         // Update scene counter
-        const story = app.memoryPalace.currentStory;
-        if (story) {
-            this.sceneCounter.textContent = story.sceneCount + 1;
+        if (app.memoryPalace.currentStory) {
+            this.sceneCounter.textContent = app.memoryPalace.currentStory.sceneCount + 1;
         }
+        
+        // Scroll to top
+        window.scrollTo(0, 0);
     }
 
     parseScene(text) {
@@ -865,7 +1165,6 @@ class UIManager {
             hook: ''
         };
         
-        // Simple parsing
         const sections = text.split(/\[([^\]]+)\]/);
         let currentSection = '';
         
@@ -889,9 +1188,13 @@ class UIManager {
                         break;
                     case 'positions':
                         content.split('\n').forEach(line => {
-                            if (line.includes(':')) {
-                                const [char, pos] = line.split(':');
-                                scene.positions[char.trim()] = pos.trim();
+                            const colonIndex = line.indexOf(':');
+                            if (colonIndex > 0) {
+                                const char = line.substring(0, colonIndex).trim();
+                                const pos = line.substring(colonIndex + 1).trim();
+                                if (char && pos) {
+                                    scene.positions[char] = pos;
+                                }
                             }
                         });
                         break;
@@ -907,9 +1210,11 @@ class UIManager {
                         }
                         break;
                     case 'choices':
-                        content.split(/\d+\./).forEach(choice => {
-                            if (choice.trim()) {
-                                scene.choices.push(choice.trim());
+                        const choiceLines = content.split(/\d+\.\s*/);
+                        choiceLines.forEach(choice => {
+                            const trimmed = choice.trim();
+                            if (trimmed && !trimmed.match(/^\d+$/)) {
+                                scene.choices.push(trimmed);
                             }
                         });
                         break;
@@ -919,6 +1224,12 @@ class UIManager {
                 }
             }
         }
+        
+        // Ensure we have exactly 4 choices
+        while (scene.choices.length < 4) {
+            scene.choices.push(`Option ${scene.choices.length + 1}: Continue exploring`);
+        }
+        scene.choices = scene.choices.slice(0, 4);
         
         return scene;
     }
@@ -933,8 +1244,7 @@ class UIManager {
         
         const entries = Object.entries(positions).map(([char, pos]) => `
             <div class="position-entry">
-                <span class="position-character">${char}:</span>
-                <span>${pos}</span>
+                <span class="position-character">${char}:</span> ${pos}
             </div>
         `).join('');
         
@@ -946,7 +1256,7 @@ class UIManager {
         
         const lines = dialogue.map(line => `
             <div class="dialogue-line">
-                <span class="character-name">${line.character}:</span>
+                <span class="character-name">${line.character}</span>
                 <span class="character-tone">(${line.tone})</span>
                 <span class="dialogue-text">${line.text}</span>
             </div>
@@ -958,11 +1268,16 @@ class UIManager {
     formatChoices(choices) {
         if (!choices || choices.length === 0) return '';
         
+        const buttonIcons = ['X', '○', '□', '△'];
+        const iconClasses = ['psp-x', 'psp-circle', 'psp-square', 'psp-triangle'];
+        
         const buttons = choices.map((choice, i) => `
-            <button class="choice-button" onclick="app.handleChoice(${i + 1})">
-                <span class="choice-number">${i + 1}.</span>
-                ${choice}
-            </button>
+            <div class="choice-wrapper">
+                <button class="choice-button" onclick="app.handleChoice(${i + 1})">
+                    ${choice}
+                    <span class="psp-button-icon ${iconClasses[i]}">${buttonIcons[i]}</span>
+                </button>
+            </div>
         `).join('');
         
         return `<div class="choice-container">${buttons}</div>`;
@@ -975,50 +1290,36 @@ class UIManager {
 
     formatCustomAction() {
         return `
-            <div class="custom-action">
-                <label class="custom-label">Custom Action:</label>
-                <div class="custom-input-wrapper">
+            <div class="custom-action-section">
+                <div class="custom-action-label">Forge Your Own Path</div>
+                <div class="custom-action-wrapper">
                     <input type="text" 
-                           id="custom-action" 
-                           class="custom-input" 
-                           placeholder="Describe your action..."
-                           onkeypress="if(event.key==='Enter') app.handleCustom()">
-                    <button class="custom-submit" onclick="app.handleCustom()">
+                           id="custom-action-input" 
+                           class="custom-action-input" 
+                           placeholder="Describe what you want to do..."
+                           autocomplete="off">
+                    <button class="submit-button" onclick="app.handleCustomAction()">
                         GO
                     </button>
                 </div>
+                <button class="regenerate-button" onclick="app.regenerateScene()">
+                    REGENERATE CURRENT SCENE
+                </button>
             </div>
         `;
-    }
-
-    showError(message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'message error';
-        errorDiv.textContent = message;
-        this.gameScreen.insertBefore(errorDiv, this.gameScreen.firstChild);
-        setTimeout(() => errorDiv.remove(), 5000);
-    }
-
-    showProcessing() {
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(b => b.disabled = true);
-    }
-
-    hideProcessing() {
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(b => b.disabled = false);
     }
 }
 
 // ============================================
 // MAIN APPLICATION
 // ============================================
-class VirtueSeekersApp {
+class InfinityEngineApp {
     constructor() {
         this.memoryPalace = new MemoryPalace();
         this.narrativeEngine = new NarrativeEngine();
         this.ui = new UIManager();
         this.currentScene = null;
+        this.isProcessing = false;
     }
 
     async initialize() {
@@ -1026,10 +1327,10 @@ class VirtueSeekersApp {
             await this.memoryPalace.initialize();
             this.ui.initialize();
             
-            // Check if we're running from file://
+            // Check if running from file://
             if (window.location.protocol === 'file:') {
                 this.ui.hideLoading();
-                this.ui.showSetupError();
+                this.showSetupError();
                 return;
             }
             
@@ -1054,23 +1355,47 @@ class VirtueSeekersApp {
             this.ui.hideLoading();
             
         } catch (error) {
-            console.error('Init error:', error);
+            console.error('Initialization error:', error);
             this.ui.hideLoading();
-            this.ui.showSetupError();
+            this.ui.showError('Failed to initialize. Please refresh.');
         }
+    }
+
+    showSetupError() {
+        this.ui.gameScreen.innerHTML = `
+            <div class="narrative-box" style="text-align: center; margin-top: 50px;">
+                <h2 style="color: #ff0033; margin-bottom: 20px;">⚠️ SETUP REQUIRED</h2>
+                <p style="margin-bottom: 20px;">This game must be hosted online to work properly!</p>
+                
+                <div style="background: rgba(0,255,0,0.1); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #00ff00;">Quick Fix (30 seconds):</h3>
+                    <ol style="text-align: left; max-width: 400px; margin: 10px auto;">
+                        <li>Save this file as "index.html"</li>
+                        <li>Go to <a href="https://app.netlify.com/drop" target="_blank" style="color: #00ff00;">netlify.com/drop</a></li>
+                        <li>Drag the file onto the page</li>
+                        <li>Use the URL they give you!</li>
+                    </ol>
+                </div>
+                
+                <p style="color: #666; font-size: 14px;">
+                    The game needs to save your progress, which browsers block for local files.
+                </p>
+            </div>
+        `;
     }
 
     async submitApiKey() {
         const input = document.getElementById('api-key-input');
         const apiKey = input.value.trim();
         
-        if (apiKey && apiKey.startsWith('sk-')) {
-            await this.memoryPalace.saveApiKey(apiKey);
-            this.narrativeEngine.setApiKey(apiKey);
-            await this.startNewStory();
-        } else {
-            this.ui.showError('Invalid API key format');
+        if (!apiKey || !apiKey.startsWith('sk-')) {
+            this.ui.showError('Please enter a valid OpenAI API key');
+            return;
         }
+        
+        await this.memoryPalace.saveApiKey(apiKey);
+        this.narrativeEngine.setApiKey(apiKey);
+        await this.startNewStory();
     }
 
     async startNewStory() {
@@ -1080,82 +1405,179 @@ class VirtueSeekersApp {
         // Generate opening scene
         const context = {
             protagonist: character,
-            userInput: `Begin the story. ${character.name} the ${character.class} arrives at a mystical location. Introduce an intriguing NPC and present choices.`
+            userInput: `Begin an epic narrative. ${character.name} the ${character.class} arrives at a mysterious location. Create an atmospheric opening with an intriguing character and meaningful choices that reflect the ${character.class} class abilities.`
         };
         
-        this.ui.showProcessing();
+        this.ui.showProcessing('Initializing your infinite narrative...');
+        
         try {
             const scene = await this.narrativeEngine.generateScene(context);
             await this.displayAndSaveScene(scene);
         } catch (error) {
-            this.ui.showError('Failed to generate scene. Check your API key.');
+            this.ui.showError(`Failed to start narrative: ${error.message}`);
         }
+        
         this.ui.hideProcessing();
     }
 
     async resumeStory() {
         const story = await this.memoryPalace.getCurrentStory();
-        const recentScenes = await this.memoryPalace.getRecentScenes();
         
         if (story.lastScene) {
             this.ui.displayScene(story.lastScene.text);
+            this.currentScene = this.ui.parseScene(story.lastScene.text);
         } else {
             await this.generateContinuation();
         }
     }
 
     async handleChoice(choiceNum) {
-        if (!this.currentScene) return;
+        if (this.isProcessing || !this.currentScene) return;
         
         const choice = this.currentScene.choices[choiceNum - 1];
         if (!choice) return;
         
+        this.isProcessing = true;
         this.ui.showProcessing();
+        
+        // Build context with memory
+        const recentScenes = await this.memoryPalace.getRecentScenes(3);
+        const previousSummary = recentScenes.map(s => 
+            `[Previous scene]: ${s.parsed?.hook || 'Scene occurred'}`
+        ).join('\n');
         
         const context = {
             protagonist: this.memoryPalace.currentStory.protagonist,
-            recentEvents: `Player chose: "${choice}"`,
-            userInput: `Continue the narrative based on this choice: "${choice}"`
+            recentEvents: `The ${this.memoryPalace.currentStory.protagonist.name} chose: "${choice}"`,
+            previousSummary: previousSummary,
+            userInput: `Continue the narrative based on this choice: "${choice}". Remember to incorporate the character's ${this.memoryPalace.currentStory.protagonist.class} abilities.`
         };
         
         try {
             const scene = await this.narrativeEngine.generateScene(context);
             await this.displayAndSaveScene(scene);
         } catch (error) {
-            this.ui.showError('Failed to continue narrative');
+            this.ui.showError('Failed to continue narrative. Check your connection.');
         }
         
+        this.isProcessing = false;
         this.ui.hideProcessing();
     }
 
-    async handleCustom() {
-        const input = document.getElementById('custom-action');
+    async handleCustomAction() {
+        const input = document.getElementById('custom-action-input');
         const action = input.value.trim();
         
-        if (!action) return;
+        if (!action || this.isProcessing) return;
         
+        this.isProcessing = true;
         this.ui.showProcessing();
+        
+        // Build context
+        const recentScenes = await this.memoryPalace.getRecentScenes(3);
+        const previousSummary = recentScenes.map(s => 
+            `[Previous]: ${s.parsed?.hook || 'Scene occurred'}`
+        ).join('\n');
         
         const context = {
             protagonist: this.memoryPalace.currentStory.protagonist,
-            recentEvents: `Player performs custom action: "${action}"`,
-            userInput: `The player attempts: "${action}". Show the results of this action.`
+            recentEvents: `Custom action attempted`,
+            previousSummary: previousSummary,
+            userInput: `The ${this.memoryPalace.currentStory.protagonist.name} attempts to: "${action}". Show the results of this action, considering their ${this.memoryPalace.currentStory.protagonist.class} abilities.`
         };
         
         try {
             const scene = await this.narrativeEngine.generateScene(context);
             await this.displayAndSaveScene(scene);
-            input.value = '';
+            input.value = ''; // Clear input
         } catch (error) {
-            this.ui.showError('Failed to process action');
+            this.ui.showError('Failed to process action. Try again.');
         }
         
+        this.isProcessing = false;
         this.ui.hideProcessing();
+    }
+
+    async regenerateScene() {
+        if (this.isProcessing) return;
+        
+        this.isProcessing = true;
+        this.ui.showProcessing('Reweaving the narrative threads...');
+        
+        try {
+            const scene = await this.narrativeEngine.regenerateScene();
+            
+            // Don't save regenerated scenes to avoid duplicates
+            const parsed = this.ui.parseScene(scene);
+            this.currentScene = parsed;
+            this.ui.displayScene(scene);
+            
+            this.ui.showInfo('Scene regenerated with new possibilities!');
+        } catch (error) {
+            this.ui.showError('Failed to regenerate scene. Try a custom action instead.');
+        }
+        
+        this.isProcessing = false;
+        this.ui.hideProcessing();
+    }
+
+    async regenerateClasses() {
+        this.ui.showProcessing('Discovering new paths...');
+        
+        const classes = await this.narrativeEngine.generateClasses();
+        
+        this.ui.hideProcessing();
+        
+        // Update the class display
+        const classGrid = document.querySelector('.class-grid');
+        if (classGrid) {
+            classGrid.innerHTML = classes.map((cls, i) => `
+                <div class="class-option" data-class="${cls.name}" data-index="${i}">
+                    <div class="class-name">${cls.name}</div>
+                    <div class="class-description">${cls.description}</div>
+                </div>
+            `).join('');
+            
+            // Rebind click handlers
+            document.querySelectorAll('.class-option').forEach(option => {
+                option.onclick = () => {
+                    document.querySelectorAll('.class-option').forEach(o => 
+                        o.classList.remove('selected')
+                    );
+                    option.classList.add('selected');
+                    
+                    const selectedClass = {
+                        name: option.dataset.class,
+                        description: classes[option.dataset.index].description
+                    };
+                    
+                    // Auto-proceed after selection
+                    setTimeout(() => {
+                        if (window._character && window._classResolve) {
+                            window._character.class = selectedClass.name;
+                            window._character.classDescription = selectedClass.description;
+                            window._character.personality = "determined and mysterious";
+                            window._character.appearance = "A figure of purpose and power";
+                            window._character.background = "Your past is shrouded in mystery";
+                            window._classResolve();
+                        }
+                    }, 500);
+                };
+            });
+        }
     }
 
     async displayAndSaveScene(sceneText) {
         const parsed = this.ui.parseScene(sceneText);
         this.currentScene = parsed;
+        
+        // Save context for future use
+        const context = {
+            protagonist: this.memoryPalace.currentStory.protagonist,
+            lastScene: parsed,
+            timestamp: Date.now()
+        };
+        this.memoryPalace.saveLastContext(context);
         
         await this.memoryPalace.saveScene({
             text: sceneText,
@@ -1164,25 +1586,23 @@ class VirtueSeekersApp {
         });
         
         this.ui.displayScene(sceneText);
-        
-        // Update memory indicator
-        const percent = Math.max(50, 100 - (this.memoryPalace.currentStory.sceneCount * 0.5));
-        this.ui.memoryPercent.textContent = `${Math.round(percent)}%`;
     }
 
     async generateContinuation() {
         const context = {
             protagonist: this.memoryPalace.currentStory.protagonist,
-            userInput: "Continue the story from where we left off."
+            userInput: "Continue the epic narrative from where we left off."
         };
         
-        this.ui.showProcessing();
+        this.ui.showProcessing('Resuming your infinite story...');
+        
         try {
             const scene = await this.narrativeEngine.generateScene(context);
             await this.displayAndSaveScene(scene);
         } catch (error) {
-            this.ui.showError('Failed to continue story');
+            this.ui.showError('Failed to continue story. Check your API key.');
         }
+        
         this.ui.hideProcessing();
     }
 }
@@ -1191,11 +1611,11 @@ class VirtueSeekersApp {
 // INITIALIZE ON LOAD
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
-    app = new VirtueSeekersApp();
+    app = new InfinityEngineApp();
     await app.initialize();
 });
 
-// Make app accessible globally for onclick handlers
+// Make app globally accessible
 window.app = app;
     </script>
 </body>
