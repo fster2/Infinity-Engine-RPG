@@ -3,134 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#212121">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <title>Infinity Engine RPG</title>
+    <title>Virtue Seekers - Infinity Engine</title>
     
     <!-- Modern Font Stack -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Söhne:wght@400;500;600&family=Monaco&display=swap" rel="stylesheet">
     
     <style>
         /* ================================
-           2025 ULTRA-MODERN DESIGN SYSTEM
+           CHATGPT DARK MODE DESIGN SYSTEM
            ================================ */
         :root {
-            /* Modern Dark Theme */
-            --bg-primary: #000000;
-            --bg-secondary: #0a0a0a;
-            --bg-tertiary: #141414;
-            --bg-elevated: #1c1c1c;
+            /* ChatGPT Dark Theme Colors */
+            --bg-primary: #212121;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #424242;
+            --bg-chat: #343541;
             
-            /* Text Hierarchy */
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --text-tertiary: #666666;
+            /* Text */
+            --text-primary: #ececf1;
+            --text-secondary: #d1d5db;
+            --text-tertiary: #acacbe;
             
-            /* Accent System */
-            --accent-primary: #0a84ff;
-            --accent-secondary: #5e5ce6;
-            --accent-success: #30d158;
-            --accent-warning: #ff9f0a;
-            --accent-danger: #ff453a;
+            /* Accent */
+            --accent-primary: #10a37f;
+            --accent-hover: #1a7f64;
             
-            /* Surfaces */
-            --surface-primary: rgba(255, 255, 255, 0.05);
-            --surface-secondary: rgba(255, 255, 255, 0.08);
-            --surface-tertiary: rgba(255, 255, 255, 0.11);
+            /* Message Bubbles */
+            --user-bg: #343541;
+            --assistant-bg: #444654;
             
             /* Borders */
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --border-medium: rgba(255, 255, 255, 0.12);
-            --border-strong: rgba(255, 255, 255, 0.18);
+            --border-primary: #4e4e5f;
+            --border-secondary: #353541;
             
-            /* Effects */
-            --blur-amount: 20px;
-            --shadow-elevation-low: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-elevation-medium: 0 8px 24px rgba(0, 0, 0, 0.4);
-            --shadow-elevation-high: 0 16px 48px rgba(0, 0, 0, 0.5);
-            
-            /* Animations */
-            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-            --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Base Styles */
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 16px;
+            font-family: Söhne, -apple-system, BlinkMacSystemFont, Helvetica, sans-serif;
+            font-size: 14px;
             line-height: 1.6;
             min-height: 100vh;
-            overflow-x: hidden;
-            overscroll-behavior: none;
+            overflow: hidden;
         }
 
-        /* Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Main App Container */
+        /* Main Layout */
         #app {
-            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
             position: relative;
-            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Modern App Header */
+        /* Header */
         .app-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(var(--blur-amount));
-            -webkit-backdrop-filter: blur(var(--blur-amount));
-            border-bottom: 1px solid var(--border-subtle);
-            z-index: 1000;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-secondary);
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            flex-shrink: 0;
         }
 
         .app-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--text-primary);
         }
 
-        .scene-indicator {
+        .header-controls {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            background: var(--surface-primary);
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
+            gap: 12px;
         }
 
-        .scene-dot {
+        .save-indicator {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .save-dot {
             width: 6px;
             height: 6px;
             background: var(--accent-primary);
             border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
+            opacity: 0;
+            animation: pulse 2s infinite;
+        }
+
+        .save-dot.active {
+            opacity: 1;
         }
 
         @keyframes pulse {
@@ -138,685 +119,741 @@
             50% { opacity: 1; }
         }
 
-        /* Content Container */
-        .content-container {
-            padding: 80px 20px 120px;
-            max-width: 800px;
-            margin: 0 auto;
+        .menu-button {
+            background: transparent;
+            border: 1px solid var(--border-primary);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        /* Loading State */
-        .loading-container {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-primary);
+        .menu-button:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--bg-chat);
+        }
+
+        .chat-messages {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 0;
+        }
+
+        /* Message Styles */
+        .message {
+            padding: 24px 48px;
+            border-bottom: 1px solid var(--border-secondary);
+        }
+
+        .message.user {
+            background: var(--user-bg);
+        }
+
+        .message.assistant {
+            background: var(--assistant-bg);
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        .loading-content {
+        .user .message-avatar {
+            background: #5436da;
+            color: white;
+        }
+
+        .assistant .message-avatar {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .message-role {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .message-content {
+            margin-left: 42px;
+            color: var(--text-primary);
+        }
+
+        /* Narrative Sections */
+        .narrative-section {
+            margin: 16px 0;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .section-content {
+            text-align: left;
+            line-height: 1.7;
+        }
+
+        .section-content p {
+            margin-bottom: 12px;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Dialogue Boxes */
+        .dialogue-container {
+            margin: 16px 0;
+        }
+
+        .dialogue-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+        }
+
+        .dialogue-speaker {
+            font-weight: 600;
+            color: var(--accent-primary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .dialogue-tone {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-style: italic;
+            margin-bottom: 4px;
+        }
+
+        .dialogue-text {
+            color: var(--text-primary);
+        }
+
+        /* Choice Cards */
+        .choices-grid {
+            display: grid;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .choice-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .choice-card:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+        }
+
+        .choice-number {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .choice-text {
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        /* Input Area */
+        .input-container {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-secondary);
+            padding: 16px;
+            flex-shrink: 0;
+        }
+
+        .input-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .custom-input {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 14px;
+            resize: none;
+            min-height: 44px;
+            max-height: 200px;
+            line-height: 1.5;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .send-button {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .send-button:hover {
+            background: var(--accent-hover);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Character Creation */
+        .creation-form {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .optional-tag {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            font-weight: normal;
+        }
+
+        /* Class Selection */
+        .class-grid {
+            display: grid;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .class-option {
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .class-option:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .class-option.selected {
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .class-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .class-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* Menu Modal */
+        .menu-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .menu-content {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .menu-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-button:hover {
+            color: var(--text-primary);
+        }
+
+        .menu-section {
+            margin-bottom: 24px;
+        }
+
+        .menu-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .menu-button-grid {
+            display: grid;
+            gap: 8px;
+        }
+
+        .menu-action {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .menu-action:hover {
+            background: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+
+        /* Character Sheet */
+        .character-sheet {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .character-stat-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .stat-group {
+            border-bottom: 1px solid var(--border-primary);
+            padding-bottom: 16px;
+        }
+
+        .stat-group:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .stat-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .stat-list li {
+            padding: 4px 0;
+            color: var(--text-secondary);
+        }
+
+        /* Loading */
+        .loading {
             text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
         }
 
-        .loading-spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid var(--surface-secondary);
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-primary);
             border-top-color: var(--accent-primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 0 auto 20px;
+            margin-right: 12px;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        .loading-text {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Narrative Display */
-        .narrative-container {
-            margin-bottom: 32px;
-            animation: fadeInUp 0.6s var(--ease-out-expo);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .narrative-section {
-            background: var(--surface-primary);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border-subtle);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .narrative-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, 
-                transparent,
-                var(--accent-primary),
-                transparent
-            );
-            opacity: 0.5;
-        }
-
-        /* Scene Text Styling */
-        .scene-text {
-            font-size: 17px;
-            line-height: 1.8;
-            color: var(--text-primary);
-            margin-bottom: 20px;
-        }
-
-        .scene-text p {
-            margin-bottom: 16px;
-        }
-
-        .scene-text p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Environmental Description */
-        .environment-section {
-            padding-left: 16px;
-            border-left: 2px solid var(--accent-secondary);
-            margin-bottom: 24px;
-            font-style: italic;
-            color: var(--text-secondary);
-        }
-
-        /* Character Dialogue */
-        .dialogue-container {
-            margin: 24px 0;
-        }
-
-        .dialogue-line {
-            margin-bottom: 20px;
-            padding: 16px;
-            background: var(--surface-secondary);
-            border-radius: 12px;
-            position: relative;
-        }
-
-        .speaker-name {
-            font-weight: 600;
-            color: var(--accent-primary);
-            margin-bottom: 4px;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .speaker-tone {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            font-style: italic;
-            margin-bottom: 8px;
-        }
-
-        .dialogue-text {
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--text-primary);
-        }
-
-        /* Choice System */
-        .choices-container {
-            margin: 32px 0;
-        }
-
-        .choice-card {
-            background: var(--surface-primary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.2s var(--ease-out-expo);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .choice-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, 
-                transparent 0%, 
-                var(--accent-primary) 100%
-            );
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .choice-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-elevation-low);
-        }
-
-        .choice-card:hover::before {
-            opacity: 0.05;
-        }
-
-        .choice-card:active {
-            transform: translateY(0);
-        }
-
-        .choice-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            background: var(--accent-primary);
-            color: var(--bg-primary);
-            border-radius: 50%;
-            font-size: 12px;
-            font-weight: 600;
-            margin-right: 12px;
-        }
-
-        .choice-text {
-            font-size: 16px;
-            line-height: 1.5;
-            color: var(--text-primary);
-        }
-
-        /* Custom Action Input */
-        .custom-action-container {
-            background: var(--bg-elevated);
-            border-radius: 20px;
-            padding: 24px;
-            margin: 32px 0;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .custom-action-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-
-        .custom-action-form {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .custom-input {
-            flex: 1;
-            padding: 14px 18px;
-            background: var(--surface-primary);
-            border: 1px solid var(--border-medium);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-
-        .custom-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.1);
-        }
-
-        .custom-input::placeholder {
-            color: var(--text-tertiary);
-        }
-
-        .action-button {
-            padding: 14px 24px;
-            background: var(--accent-primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s var(--ease-out-expo);
-            white-space: nowrap;
-        }
-
-        .action-button:hover {
-            background: var(--accent-secondary);
-            transform: scale(1.02);
-        }
-
-        .action-button:active {
-            transform: scale(0.98);
-        }
-
         /* Regenerate Button */
         .regenerate-button {
-            width: 100%;
-            padding: 14px;
-            background: var(--surface-secondary);
-            border: 1px solid var(--border-medium);
-            border-radius: 12px;
+            background: transparent;
+            border: 1px solid var(--border-primary);
             color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 6px;
+            margin-top: 12px;
         }
 
         .regenerate-button:hover {
-            background: var(--surface-tertiary);
+            background: var(--bg-tertiary);
             color: var(--text-primary);
             border-color: var(--accent-primary);
         }
 
-        .regenerate-icon {
-            font-size: 18px;
+        /* Remove Buttons for Trackers */
+        .stat-group {
+            position: relative;
+            padding-right: 30px;
         }
-
-        /* Messages/Toasts */
-        .toast {
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 16px 24px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-medium);
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 2000;
-            animation: slideDown 0.3s var(--ease-out-expo);
-            box-shadow: var(--shadow-elevation-medium);
-            backdrop-filter: blur(var(--blur-amount));
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -20px);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-        }
-
-        .toast.error {
-            border-color: var(--accent-danger);
-            color: var(--accent-danger);
-        }
-
-        .toast.success {
-            border-color: var(--accent-success);
-            color: var(--accent-success);
-        }
-
-        /* Character Creation */
-        .creation-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 32px 20px;
-        }
-
-        .creation-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .creation-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .creation-subtitle {
+        
+        .stat-group .close-button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 24px;
+            height: 24px;
             font-size: 16px;
-            color: var(--text-secondary);
-        }
-
-        .creation-card {
-            background: var(--surface-primary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 20px;
-            padding: 32px;
-            margin-bottom: 24px;
-        }
-
-        .input-group {
-            margin-bottom: 24px;
-        }
-
-        .input-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .creation-input {
-            width: 100%;
-            padding: 16px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-medium);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 16px;
-            transition: all 0.2s;
-        }
-
-        .creation-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.1);
-        }
-
-        /* Class Selection Grid */
-        .class-grid {
-            display: grid;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .class-card {
-            padding: 20px;
-            background: var(--surface-secondary);
-            border: 2px solid transparent;
-            border-radius: 16px;
+            background: transparent;
+            border: 1px solid var(--border-primary);
+            color: var(--text-tertiary);
             cursor: pointer;
-            transition: all 0.2s var(--ease-out-expo);
-        }
-
-        .class-card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-elevation-low);
-        }
-
-        .class-card.selected {
-            border-color: var(--accent-primary);
-            background: var(--surface-tertiary);
-        }
-
-        .class-name {
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        .class-description {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Continue Button */
-        .continue-button {
-            width: 100%;
-            padding: 18px;
-            background: var(--accent-primary);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s var(--ease-out-expo);
-        }
-
-        .continue-button:hover {
-            background: var(--accent-secondary);
-            transform: scale(1.02);
-        }
-
-        /* Processing State */
-        .processing-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9998;
+            border-radius: 4px;
+            transition: all 0.2s;
         }
-
-        .processing-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-medium);
-            border-radius: 20px;
-            padding: 32px;
-            text-align: center;
-            box-shadow: var(--shadow-elevation-high);
+        
+        .stat-group .close-button:hover {
+            background: var(--accent-danger);
+            border-color: var(--accent-danger);
+            color: white;
         }
-
-        .processing-spinner {
-            width: 56px;
-            height: 56px;
-            border: 3px solid var(--surface-tertiary);
-            border-top-color: var(--accent-primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 20px;
+        
+        /* Quest Objectives */
+        .stat-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
-        .processing-text {
-            font-size: 16px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* API Key Prompt */
-        .api-key-container {
-            background: var(--surface-primary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 20px;
-            padding: 32px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .api-key-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .api-key-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .api-key-description {
-            font-size: 16px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .api-key-link {
-            color: var(--accent-primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .api-key-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Mobile Optimizations */
-        @media (max-width: 600px) {
-            .content-container {
-                padding: 70px 16px 100px;
-            }
-            
-            .narrative-section {
-                padding: 20px;
-            }
-            
-            .scene-text {
-                font-size: 16px;
-            }
-            
-            .creation-card {
-                padding: 24px;
-            }
-        }
-
+        
         /* Utility */
         .hidden {
             display: none !important;
         }
 
-        /* Disabled State */
-        button:disabled,
-        input:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        /* Mobile */
+        @media (max-width: 600px) {
+            .message {
+                padding: 16px 24px;
+            }
+            
+            .menu-content {
+                width: 95%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Loading State -->
-    <div id="loading-container" class="loading-container">
-        <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <div class="loading-text">Initializing Infinity Engine...</div>
-        </div>
-    </div>
-
-    <!-- Main App -->
-    <div id="app" class="hidden">
-        <!-- Fixed Header -->
+    <div id="app">
+        <!-- Header -->
         <header class="app-header">
-            <div class="app-title">Infinity Engine</div>
-            <div class="scene-indicator">
-                <div class="scene-dot"></div>
-                <span id="scene-counter">Scene 1</span>
+            <div class="app-title">Virtue Seekers</div>
+            <div class="header-controls">
+                <div class="save-indicator">
+                    <div class="save-dot" id="save-indicator"></div>
+                    <span id="save-text">Saved</span>
+                </div>
+                <button class="menu-button" onclick="app.showMenu()">Menu</button>
             </div>
         </header>
 
-        <!-- Content -->
-        <div class="content-container" id="content-container">
-            <!-- Dynamic content inserted here -->
+        <!-- Chat Container -->
+        <div class="chat-container" id="chat-container">
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-container">
+            <div class="input-wrapper">
+                <textarea 
+                    id="custom-input" 
+                    class="custom-input" 
+                    placeholder="What do you do?"
+                    rows="1"></textarea>
+                <button id="send-button" class="send-button" onclick="app.sendAction()">Send</button>
+            </div>
+        </div>
+
+        <!-- Menu Modal (hidden by default) -->
+        <div id="menu-modal" class="menu-modal hidden">
+            <div class="menu-content">
+                <div class="menu-header">
+                    <h2 class="menu-title">Menu</h2>
+                    <button class="close-button" onclick="app.hideMenu()">×</button>
+                </div>
+                
+                <div class="menu-section">
+                    <h3 class="menu-section-title">Character</h3>
+                    <div class="menu-button-grid">
+                        <button class="menu-action" onclick="app.showCharacterSheet()">View Character Sheet</button>
+                        <button class="menu-action" onclick="app.showPartyMembers()">Party Members</button>
+                        <button class="menu-action" onclick="app.showQuestJournal()">Quest Journal</button>
+                        <button class="menu-action" onclick="app.showRelationships()">Relationship Tracker</button>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <h3 class="menu-section-title">Story</h3>
+                    <div class="menu-button-grid">
+                        <button class="menu-action" onclick="app.exportStory()">Export Story</button>
+                        <button class="menu-action" onclick="app.searchHistory()">Search History</button>
+                        <button class="menu-action" onclick="app.showStats()">Story Statistics</button>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <h3 class="menu-section-title">System</h3>
+                    <div class="menu-button-grid">
+                        <button class="menu-action" onclick="app.changeApiKey()">Change API Key</button>
+                        <button class="menu-action" onclick="app.clearData()">Start New Story</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
 // ============================================
-// INFINITY ENGINE - 2025 EDITION
+// VIRTUE SEEKERS INFINITY ENGINE - CHAT STYLE
 // ============================================
 
-class InfinityEngine {
+class VirtueSeekers {
     constructor() {
         this.apiKey = null;
         this.currentStory = null;
-        this.currentScene = null;
+        this.messageHistory = [];
         this.isProcessing = false;
-        this.lastContext = null;
+        this.partyMembers = [];
+        this.questJournal = [];
+        this.relationships = {};
         
-        // Storage keys
-        this.STORAGE_PREFIX = 'infinity_';
+        // Storage
+        this.STORAGE_PREFIX = 'virtue_seekers_';
         this.STORAGE_KEYS = {
             API_KEY: 'api_key',
             CURRENT_STORY: 'current_story',
-            SCENE_HISTORY: 'scene_history',
-            WORLD_STATE: 'world_state'
+            MESSAGE_HISTORY: 'message_history',
+            PARTY_MEMBERS: 'party_members',
+            WORLD_STATE: 'world_state',
+            QUEST_JOURNAL: 'quest_journal',
+            RELATIONSHIPS: 'relationships'
         };
         
-        // DON'T auto-initialize in constructor
-        console.log('🎮 Infinity Engine constructed');
+        // Auto-save timer
+        this.autoSaveInterval = null;
     }
     
     async initialize() {
-        try {
-            console.log('🚀 Starting initialization...');
-            
-            // Check for existing API key
-            this.apiKey = this.getFromStorage(this.STORAGE_KEYS.API_KEY);
-            console.log('API Key found:', !!this.apiKey);
-            
-            // Always hide loading after a delay to prevent infinite loading
-            setTimeout(() => {
-                this.hideLoading();
-                
-                if (!this.apiKey) {
-                    console.log('No API key, showing prompt...');
-                    this.showApiKeyPrompt();
-                    return;
-                }
-                
-                // Check for existing story
-                this.currentStory = this.getFromStorage(this.STORAGE_KEYS.CURRENT_STORY);
-                
-                if (this.currentStory) {
-                    console.log('Resuming existing story...');
-                    this.resumeStory();
-                } else {
-                    console.log('Starting new story...');
-                    this.startNewStory();
-                }
-            }, 1500); // Always hide loading after 1.5 seconds
-            
-        } catch (error) {
-            console.error('❌ Initialization failed:', error);
-            // Force hide loading and show error
-            setTimeout(() => {
-                this.hideLoading();
-                this.showError('Failed to initialize. Please refresh the page.');
-                // Show API key prompt as fallback
-                this.showApiKeyPrompt();
-            }, 500);
+        // Load saved data
+        this.apiKey = this.getFromStorage(this.STORAGE_KEYS.API_KEY);
+        this.currentStory = this.getFromStorage(this.STORAGE_KEYS.CURRENT_STORY);
+        this.messageHistory = this.getFromStorage(this.STORAGE_KEYS.MESSAGE_HISTORY) || [];
+        this.partyMembers = this.getFromStorage(this.STORAGE_KEYS.PARTY_MEMBERS) || [];
+        this.questJournal = this.getFromStorage(this.STORAGE_KEYS.QUEST_JOURNAL) || [];
+        this.relationships = this.getFromStorage(this.STORAGE_KEYS.RELATIONSHIPS) || {};
+        
+        // Set up UI
+        this.setupInputHandlers();
+        this.setupKeyboardShortcuts();
+        
+        // Start auto-save
+        this.startAutoSave();
+        
+        if (!this.apiKey) {
+            this.showApiKeyPrompt();
+        } else if (this.messageHistory.length > 0) {
+            this.displayMessageHistory();
+        } else {
+            this.startNewStory();
         }
     }
     
     // ============================================
-    // STORAGE MANAGEMENT
+    // UI SETUP
+    // ============================================
+    
+    setupInputHandlers() {
+        const input = document.getElementById('custom-input');
+        
+        // Auto-resize textarea
+        input.addEventListener('input', () => {
+            input.style.height = 'auto';
+            input.style.height = input.scrollHeight + 'px';
+        });
+        
+        // Handle Enter (send) vs Shift+Enter (new line)
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.sendAction();
+            }
+        });
+    }
+    
+    setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Escape to show menu
+            if (e.key === 'Escape') {
+                this.toggleMenu();
+            }
+            
+            // Number keys for choices
+            if (!this.isProcessing && e.key >= '1' && e.key <= '4') {
+                const choices = document.querySelectorAll('.choice-card');
+                const index = parseInt(e.key) - 1;
+                if (choices[index]) {
+                    choices[index].click();
+                }
+            }
+        });
+    }
+    
+    // ============================================
+    // STORAGE
     // ============================================
     
     saveToStorage(key, value) {
         try {
             localStorage.setItem(this.STORAGE_PREFIX + key, JSON.stringify(value));
+            this.showSaveIndicator();
         } catch (e) {
-            // Fallback for sandboxed environments
-            if (!window._memoryFallback) window._memoryFallback = {};
-            window._memoryFallback[this.STORAGE_PREFIX + key] = value;
-            console.log('Using memory fallback due to sandbox restrictions');
+            console.error('Storage failed:', e);
         }
     }
     
@@ -825,13 +862,34 @@ class InfinityEngine {
             const item = localStorage.getItem(this.STORAGE_PREFIX + key);
             return item ? JSON.parse(item) : null;
         } catch (e) {
-            // Fallback for sandboxed environments
-            if (window._memoryFallback && window._memoryFallback[this.STORAGE_PREFIX + key]) {
-                return window._memoryFallback[this.STORAGE_PREFIX + key];
-            }
-            console.log('Using memory fallback due to sandbox restrictions');
+            console.error('Storage read failed:', e);
             return null;
         }
+    }
+    
+    showSaveIndicator() {
+        const dot = document.getElementById('save-indicator');
+        const text = document.getElementById('save-text');
+        
+        dot.classList.add('active');
+        text.textContent = 'Saving...';
+        
+        setTimeout(() => {
+            dot.classList.remove('active');
+            text.textContent = 'Saved';
+        }, 1000);
+    }
+    
+    startAutoSave() {
+        this.autoSaveInterval = setInterval(() => {
+            if (this.messageHistory.length > 0) {
+                this.saveToStorage(this.STORAGE_KEYS.MESSAGE_HISTORY, this.messageHistory);
+                this.saveToStorage(this.STORAGE_KEYS.CURRENT_STORY, this.currentStory);
+                this.saveToStorage(this.STORAGE_KEYS.PARTY_MEMBERS, this.partyMembers);
+                this.saveToStorage(this.STORAGE_KEYS.QUEST_JOURNAL, this.questJournal);
+                this.saveToStorage(this.STORAGE_KEYS.RELATIONSHIPS, this.relationships);
+            }
+        }, 30000); // Every 30 seconds
     }
     
     // ============================================
@@ -839,47 +897,25 @@ class InfinityEngine {
     // ============================================
     
     showApiKeyPrompt() {
-        const content = document.getElementById('content-container');
-        content.innerHTML = `
-            <div class="api-key-container">
-                <div class="api-key-header">
-                    <h1 class="api-key-title">Welcome to Infinity Engine</h1>
-                    <p class="api-key-description">
-                        To power your infinite narrative, you'll need an OpenAI API key.
-                        Your key is stored locally and never shared.
-                    </p>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">OpenAI API Key</label>
-                    <input type="password" 
-                           id="api-key-input" 
-                           class="creation-input" 
-                           placeholder="sk-..." 
-                           autocomplete="off">
-                </div>
-                <button class="continue-button" onclick="app.submitApiKey()">
-                    Activate Infinity Engine
-                </button>
-                <p style="text-align: center; margin-top: 24px;">
-                    <a href="https://platform.openai.com/api-keys" 
-                       target="_blank" 
-                       class="api-key-link">
-                        Get your API key from OpenAI →
-                    </a>
+        this.addMessage('system', `
+            <div class="creation-form">
+                <h2 style="margin-bottom: 16px;">Welcome to Virtue Seekers</h2>
+                <p style="margin-bottom: 20px; color: var(--text-secondary);">
+                    To begin your infinite narrative journey, please enter your OpenAI API key.
+                    Your key is stored locally and never shared.
                 </p>
-                <p style="text-align: center; margin-top: 16px; font-size: 14px; color: #666;">
-                    Using GPT-4.1 mini: ~$0.0003 per scene (1000 scenes = $0.30)
+                <div class="form-group">
+                    <label class="form-label">OpenAI API Key</label>
+                    <input type="password" id="api-key-input" class="form-input" placeholder="sk-...">
+                </div>
+                <div style="margin-top: 16px;">
+                    <button class="send-button" onclick="app.submitApiKey()">Begin Adventure</button>
+                </div>
+                <p style="margin-top: 16px; font-size: 12px; color: var(--text-tertiary);">
+                    Need a key? <a href="https://platform.openai.com/api-keys" target="_blank" style="color: var(--accent-primary);">Get one from OpenAI →</a>
                 </p>
             </div>
-        `;
-        
-        // Add enter key support
-        const input = document.getElementById('api-key-input');
-        input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.submitApiKey();
-        });
-        
-        setTimeout(() => input.focus(), 100);
+        `);
     }
     
     async submitApiKey() {
@@ -887,207 +923,196 @@ class InfinityEngine {
         const apiKey = input.value.trim();
         
         if (!apiKey || !apiKey.startsWith('sk-')) {
-            this.showError('Please enter a valid OpenAI API key');
+            alert('Please enter a valid OpenAI API key');
             return;
         }
         
         this.apiKey = apiKey;
         this.saveToStorage(this.STORAGE_KEYS.API_KEY, apiKey);
+        this.clearChat();
         await this.startNewStory();
-    }
-    
-    // ============================================
-    // STORY MANAGEMENT
-    // ============================================
-    
-    async startNewStory() {
-        const character = await this.showCharacterCreation();
-        
-        this.currentStory = {
-            id: Date.now(),
-            character: character,
-            sceneCount: 0,
-            created: new Date().toISOString(),
-            worldState: {}
-        };
-        
-        this.saveToStorage(this.STORAGE_KEYS.CURRENT_STORY, this.currentStory);
-        
-        // Generate opening scene
-        await this.generateOpeningScene();
-    }
-    
-    async resumeStory() {
-        // Load scene history
-        const sceneHistory = this.getFromStorage(this.STORAGE_KEYS.SCENE_HISTORY) || [];
-        
-        if (sceneHistory.length > 0) {
-            const lastScene = sceneHistory[sceneHistory.length - 1];
-            this.currentScene = lastScene;
-            this.displayScene(lastScene);
-            this.updateSceneCounter();
-        } else {
-            await this.generateOpeningScene();
-        }
     }
     
     // ============================================
     // CHARACTER CREATION
     // ============================================
     
-    async showCharacterCreation() {
-        return new Promise(async (resolve) => {
-            const content = document.getElementById('content-container');
+    async startNewStory() {
+        this.currentStory = {
+            id: Date.now(),
+            character: null,
+            sceneCount: 0,
+            created: new Date().toISOString()
+        };
+        
+        this.addMessage('assistant', `
+            <h2 style="margin-bottom: 16px;">Create Your Character</h2>
+            <p style="margin-bottom: 20px;">Tell me about your character. Fill in what you'd like - the rest will be generated procedurally.</p>
             
-            // Step 1: Name
-            content.innerHTML = `
-                <div class="creation-container">
-                    <div class="creation-header">
-                        <h1 class="creation-title">Create Your Character</h1>
-                        <p class="creation-subtitle">Begin your infinite journey</p>
+            <div class="creation-form" id="character-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Name <span class="optional-tag">(required)</span></label>
+                        <input type="text" id="char-name" class="form-input" placeholder="Enter character name">
                     </div>
-                    <div class="creation-card">
-                        <div class="input-group">
-                            <label class="input-label">Character Name</label>
-                            <input type="text" 
-                                   id="character-name" 
-                                   class="creation-input" 
-                                   placeholder="Enter your character's name..."
-                                   maxlength="30">
-                        </div>
-                        <button class="continue-button" id="continue-name">
-                            Continue →
-                        </button>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Gender <span class="optional-tag">(optional)</span></label>
+                        <input type="text" id="char-gender" class="form-input" placeholder="Any gender or leave blank">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Appearance <span class="optional-tag">(optional)</span></label>
+                        <textarea id="char-appearance" class="form-input form-textarea" placeholder="Describe how your character looks"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Personality <span class="optional-tag">(optional)</span></label>
+                        <textarea id="char-personality" class="form-input form-textarea" placeholder="Describe their personality traits"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Alignment <span class="optional-tag">(optional)</span></label>
+                        <input type="text" id="char-alignment" class="form-input" placeholder="e.g., Chaotic Good, True Neutral">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">What They Love <span class="optional-tag">(optional)</span></label>
+                        <input type="text" id="char-loves" class="form-input" placeholder="What brings them joy?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">What They Hate <span class="optional-tag">(optional)</span></label>
+                        <input type="text" id="char-hates" class="form-input" placeholder="What do they despise?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Background <span class="optional-tag">(optional)</span></label>
+                        <textarea id="char-background" class="form-input form-textarea" placeholder="Any backstory details?"></textarea>
                     </div>
                 </div>
-            `;
-            
-            const nameInput = document.getElementById('character-name');
-            const continueBtn = document.getElementById('continue-name');
-            
-            nameInput.focus();
-            
-            const proceedToClass = async () => {
-                const name = nameInput.value.trim();
-                if (!name) {
-                    this.showError('Please enter a character name');
-                    return;
-                }
                 
-                // Step 2: Class Selection
-                this.showProcessing('Discovering unique paths...');
-                const classes = await this.generateClasses();
-                this.hideProcessing();
-                
-                content.innerHTML = `
-                    <div class="creation-container">
-                        <div class="creation-header">
-                            <h1 class="creation-title">Choose Your Path</h1>
-                            <p class="creation-subtitle">Select your class, ${name}</p>
-                        </div>
-                        <div class="creation-card">
-                            <div class="class-grid" id="class-grid">
-                                ${classes.map((cls, i) => `
-                                    <div class="class-card" data-class="${cls.name}" data-index="${i}">
-                                        <div class="class-name">${cls.name}</div>
-                                        <div class="class-description">${cls.description}</div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <button class="regenerate-button" onclick="app.regenerateClasses()">
-                                <span class="regenerate-icon">↻</span>
-                                Show Different Classes
-                            </button>
-                        </div>
+                <div style="margin-top: 20px;">
+                    <button class="send-button" onclick="app.proceedToClassSelection()">Continue →</button>
+                </div>
+            </div>
+        `);
+        
+        // Focus name field
+        setTimeout(() => document.getElementById('char-name')?.focus(), 100);
+    }
+    
+    async proceedToClassSelection() {
+        const name = document.getElementById('char-name').value.trim();
+        if (!name) {
+            alert('Please enter a character name');
+            return;
+        }
+        
+        // Collect all character data
+        const characterData = {
+            name: name,
+            gender: document.getElementById('char-gender').value.trim() || 'unspecified',
+            appearance: document.getElementById('char-appearance').value.trim() || 'mysterious',
+            personality: document.getElementById('char-personality').value.trim() || 'determined',
+            alignment: document.getElementById('char-alignment').value.trim() || 'neutral',
+            loves: document.getElementById('char-loves').value.trim() || 'adventure',
+            hates: document.getElementById('char-hates').value.trim() || 'injustice',
+            background: document.getElementById('char-background').value.trim() || 'unknown'
+        };
+        
+        // Store character data temporarily
+        this.currentStory.character = characterData;
+        
+        // Generate classes
+        this.isProcessing = true;
+        this.addMessage('system', '<div class="loading"><span class="spinner"></span>Discovering unique paths...</div>');
+        
+        const classes = await this.generateClasses(characterData);
+        
+        // Remove loading message
+        this.removeLastMessage();
+        
+        this.addMessage('assistant', `
+            <h2 style="margin-bottom: 16px;">Choose Your Path</h2>
+            <p style="margin-bottom: 20px;">Select a class for ${name}:</p>
+            
+            <div class="class-grid" id="class-selection">
+                ${classes.map((cls, i) => `
+                    <div class="class-option" data-index="${i}" onclick="app.selectClass(${i})">
+                        <div class="class-name">${cls.name}</div>
+                        <div class="class-description">${cls.description}</div>
                     </div>
-                `;
-                
-                // Class selection logic
-                let selectedClass = null;
-                document.querySelectorAll('.class-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        document.querySelectorAll('.class-card').forEach(c => 
-                            c.classList.remove('selected')
-                        );
-                        card.classList.add('selected');
-                        selectedClass = classes[card.dataset.index];
-                        
-                        // Auto-proceed after selection
-                        setTimeout(() => {
-                            resolve({
-                                name: name,
-                                class: selectedClass.name,
-                                classDescription: selectedClass.description
-                            });
-                        }, 300);
-                    });
-                });
-                
-                // Store classes for regeneration
-                window._currentClasses = classes;
-                window._characterName = name;
-                window._resolveCharacter = resolve;
-            };
+                `).join('')}
+            </div>
             
-            continueBtn.addEventListener('click', proceedToClass);
-            nameInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') proceedToClass();
-            });
-        });
+            <button class="regenerate-button" onclick="app.regenerateClasses()">
+                ↻ Show Different Classes
+            </button>
+        `);
+        
+        // Store classes for selection
+        this.generatedClasses = classes;
+        this.isProcessing = false;
+    }
+    
+    async selectClass(index) {
+        const selectedClass = this.generatedClasses[index];
+        this.currentStory.character.class = selectedClass.name;
+        this.currentStory.character.classDescription = selectedClass.description;
+        
+        // Save character
+        this.saveToStorage(this.STORAGE_KEYS.CURRENT_STORY, this.currentStory);
+        
+        // Show user's selection
+        this.addMessage('user', `I choose to be a ${selectedClass.name}.`);
+        
+        // Generate opening scene
+        await this.generateOpeningScene();
     }
     
     async regenerateClasses() {
-        this.showProcessing('Discovering new paths...');
-        const classes = await this.generateClasses();
-        this.hideProcessing();
+        if (this.isProcessing) return;
         
-        const grid = document.getElementById('class-grid');
-        grid.innerHTML = classes.map((cls, i) => `
-            <div class="class-card" data-class="${cls.name}" data-index="${i}">
-                <div class="class-name">${cls.name}</div>
-                <div class="class-description">${cls.description}</div>
-            </div>
-        `).join('');
+        this.isProcessing = true;
+        this.addMessage('system', '<div class="loading"><span class="spinner"></span>Discovering new paths...</div>');
         
-        // Rebind click handlers
-        let selectedClass = null;
-        document.querySelectorAll('.class-card').forEach(card => {
-            card.addEventListener('click', () => {
-                document.querySelectorAll('.class-card').forEach(c => 
-                    c.classList.remove('selected')
-                );
-                card.classList.add('selected');
-                selectedClass = classes[card.dataset.index];
-                
-                setTimeout(() => {
-                    window._resolveCharacter({
-                        name: window._characterName,
-                        class: selectedClass.name,
-                        classDescription: selectedClass.description
-                    });
-                }, 300);
-            });
-        });
+        const classes = await this.generateClasses(this.currentStory.character);
+        
+        this.removeLastMessage();
+        
+        // Update the class selection
+        const classGrid = document.getElementById('class-selection');
+        if (classGrid) {
+            classGrid.innerHTML = classes.map((cls, i) => `
+                <div class="class-option" data-index="${i}" onclick="app.selectClass(${i})">
+                    <div class="class-name">${cls.name}</div>
+                    <div class="class-description">${cls.description}</div>
+                </div>
+            `).join('');
+        }
+        
+        this.generatedClasses = classes;
+        this.isProcessing = false;
     }
     
     // ============================================
     // NARRATIVE GENERATION
     // ============================================
     
-    async generateClasses() {
+    async generateClasses(characterData) {
         try {
             const response = await this.callGPT([
                 {
                     role: 'system',
-                    content: 'Generate 6 unique fantasy RPG classes. Each should be creative and unusual, not standard fantasy tropes. Return as JSON array with "name" and "description" fields. Keep descriptions to one compelling sentence.'
+                    content: `Generate 6 unique fantasy RPG classes tailored to this character: ${JSON.stringify(characterData)}. Each should be creative and unusual, not standard fantasy tropes. Return as JSON array with "name" and "description" fields. Keep descriptions to one compelling sentence.`
                 },
                 {
                     role: 'user',
-                    content: 'Generate 6 unique character classes for a narrative RPG. Be creative and avoid clichés.'
+                    content: 'Generate 6 unique character classes. Be creative and avoid clichés.'
                 }
             ], 0.9, 400);
             
-            // Parse JSON from response
             const jsonMatch = response.match(/\[[\s\S]*\]/);
             if (jsonMatch) {
                 return JSON.parse(jsonMatch[0]);
@@ -1108,517 +1133,380 @@ class InfinityEngine {
     }
     
     async generateOpeningScene() {
-        this.showProcessing('Weaving your story...');
+        this.isProcessing = true;
+        this.addMessage('system', '<div class="loading"><span class="spinner"></span>Weaving your story...</div>');
         
-        const character = this.currentStory.character;
+        const char = this.currentStory.character;
+        const context = this.buildNarrativeContext();
         
         const messages = [
             {
                 role: 'system',
-                content: `You are a masterful storyteller creating an immersive fantasy narrative. 
-Your responses must be RICH, DETAILED, and EXTENSIVE.
+                content: `You are a Fantasy RPG Game Master creating a Virtue Seekers narrative.
+Your role is to craft immersive, purely fantasy narratives with magical, mysterious environments.
 
-CRITICAL REQUIREMENTS:
-- Each section must be AT LEAST 3-5 paragraphs
-- Total response should be 800-1200 words minimum
-- Use vivid, sensory language throughout
-- Show don't tell - describe actions in cinematic detail
+WORD COUNT: 500 words average (700 for combat scenes).
 
-Structure your response as follows:
+Character Details:
+- Name: ${char.name}
+- Class: ${char.class} (${char.classDescription})
+- Gender: ${char.gender}
+- Appearance: ${char.appearance}
+- Personality: ${char.personality}
+- Alignment: ${char.alignment}
+- Loves: ${char.loves}
+- Hates: ${char.hates}
+- Background: ${char.background}
 
-[Setting]
-AT LEAST 3-4 paragraphs describing the environment. Include:
-- Visual details: colors, lighting, shadows, movement
-- Sounds: both obvious and subtle background noises  
-- Smells and tastes in the air
-- Textures and temperatures
-- Magical elements woven naturally throughout
-- The overall atmosphere and how it makes one feel
+Structure your response EXACTLY as follows:
 
-[Action]
-AT LEAST 4-5 paragraphs showing what happens. CRITICAL:
-- Show the player's action happening step-by-step
-- Describe physical movements, facial expressions, body language
-- Include environmental reactions to the action
-- Show consequences unfolding in real-time
-- Build tension through pacing
-- Use all five senses in the description
+[Rich Environmental Description]
+2-3 paragraphs with multiple sensory details (light, temperature, sounds, smells). Weave in magical elements like dancing will-o'-the-wisps or floating motes of light.
 
-[Characters]
-AT LEAST 2-3 paragraphs for each character present:
-- Detailed physical appearance including clothing and equipment
-- Body language and mannerisms
-- Facial expressions and micro-expressions
-- How they move and occupy space
-- Their emotional state shown through actions
-- Unique quirks or habits
+[Character Positions and Actions]
+1 paragraph clearly indicating where each character stands, what they're doing, and any significant gear or abilities.
 
-[Dialogue]
-Natural, character-revealing conversation. Format: CharacterName: (specific emotion) "What they say."
-- Make dialogue feel real and unscripted
-- Include pauses, stutters, interruptions
-- Show personality through speech patterns
-- Use subtext - what they don't say matters
+[Character Dialogue]
+Format: Name: (tone/expression) "Dialogue."
+Show distinct personalities, emotions, and interpersonal dynamics.
 
-[Options]
-Present exactly 4 distinct choices that:
-- Lead in completely different narrative directions
-- Are detailed and specific (not generic)
-- Reflect the character's class abilities
-- Include at least one creative/unexpected option
-- NEVER repeat similar choices
+[Choice Presentation]
+Provide 2-5 options formatted as:
+1. [Action Option]: [Brief description]
+2. [Action Option]: [Brief description]
+3. [Action Option]: [Brief description]
 
-[Hook]
-A compelling 1-2 paragraph cliffhanger that:
-- Introduces a new mystery or revelation
-- Creates urgent tension
-- Hints at greater dangers or opportunities
-- Makes it impossible not to continue
-
-Current protagonist: ${character.name} the ${character.class} (${character.classDescription})`
+[Scene-Closing Hook]
+1 paragraph ending with tension, suspense, or a new revelation.`
             },
             {
                 role: 'user',
-                content: `Begin an epic narrative. ${character.name} the ${character.class} awakens in a mysterious location. 
-
-IMPORTANT: Create an extremely rich, cinematic opening scene with:
-- At least 4-5 paragraphs describing the setting with all five senses
-- 4-5 paragraphs showing ${character.name} awakening and taking their first actions
-- Introduce an intriguing character with 2-3 paragraphs of detailed description
-- Natural dialogue that reveals character and builds intrigue
-- 4 distinct choices that each lead in completely different directions
-
-Make this opening unforgettable - paint every detail, every sensation, every emotion. This is the beginning of an infinite saga.`
+                content: `Begin the adventure. ${char.name} the ${char.class} awakens in a mysterious location. Create a compelling opening scene.`
             }
         ];
         
         try {
-            const response = await this.callGPT(messages, 0.8, 2000);
-            const scene = this.parseScene(response);
+            const response = await this.callGPT(messages, 0.8, 1000);
             
-            this.currentScene = scene;
-            this.saveScene(scene);
-            this.displayScene(scene);
+            this.removeLastMessage(); // Remove loading
+            this.displayNarrativeResponse(response);
+            
+            this.currentStory.sceneCount++;
+            this.saveToStorage(this.STORAGE_KEYS.CURRENT_STORY, this.currentStory);
             
         } catch (error) {
-            this.showError('Failed to generate opening scene. Please check your API key.');
+            this.removeLastMessage();
+            this.addMessage('system', `Error: ${error.message}`);
         }
         
-        this.hideProcessing();
+        this.isProcessing = false;
     }
     
-    async handleChoice(choiceIndex) {
+    async handleChoice(choiceText) {
         if (this.isProcessing) return;
         
-        const choice = this.currentScene.options[choiceIndex - 1];
-        if (!choice) return;
+        this.addMessage('user', choiceText);
         
         this.isProcessing = true;
-        this.showProcessing('Continuing your story...');
+        this.addMessage('system', '<div class="loading"><span class="spinner"></span>Continuing the narrative...</div>');
         
-        // Build context with MASSIVE memory
-        const recentScenes = this.getRecentScenes(30); // 30 scenes instead of 3!
-        const contextSummary = this.buildContextSummary(recentScenes);
+        const context = this.buildNarrativeContext();
         
         const messages = [
             {
                 role: 'system',
-                content: `You are a masterful storyteller creating an immersive fantasy narrative. 
-Your responses must be RICH, DETAILED, and EXTENSIVE - at least 800-1200 words total.
+                content: `You are a Fantasy RPG Game Master creating a Virtue Seekers narrative.
 
-CRITICAL REQUIREMENTS:
-- Each section must be AT LEAST 3-5 paragraphs
-- Show the chosen action happening in CINEMATIC DETAIL
-- Use all five senses in your descriptions
-- Build tension through pacing and detail
+WORD COUNT: 500 words average (700 for combat).
 
-Structure your response as follows:
+Remember all established facts:
+${context}
 
-[Setting]
-AT LEAST 3-4 paragraphs of rich environmental description. Paint the scene like a movie.
+Show the chosen action happening in detail, then continue the story.
 
-[Action]
-AT LEAST 5-6 paragraphs showing the chosen action. THIS IS CRITICAL:
-- First paragraph: Show the character beginning the action
-- Next paragraphs: Detail every step, movement, and reaction
-- Show environmental changes and NPC responses
-- Build to a climactic moment
-- Conclude with immediate consequences
+Structure your response EXACTLY as follows:
 
-[Characters]
-AT LEAST 2-3 paragraphs per character, showing their full presence.
+[Rich Environmental Description]
+2-3 paragraphs with multiple sensory details (light, temperature, sounds, smells). Include magical elements.
 
-[Dialogue]
-Natural conversation with subtext. Format: Name: (specific emotion) "Dialogue"
+[Character Positions and Actions]
+1 paragraph clearly indicating where each character stands and what they're doing.
 
-[Options]
-4 completely distinct choices - each leading somewhere different.
+[Character Dialogue]
+Format: Name: (tone/expression) "Dialogue."
+Show distinct personalities and emotions.
 
-[Hook]
-1-2 paragraphs of compelling cliffhanger.
+[Choice Presentation]
+Provide 2-5 options formatted as:
+1. [Action Option]: [Brief description]
+2. [Action Option]: [Brief description]
+3. [Action Option]: [Brief description]
 
-Protagonist: ${this.currentStory.character.name} the ${this.currentStory.character.class}
-Recent context: ${contextSummary}`
+[Scene-Closing Hook]
+1 paragraph ending with tension, suspense, or revelation.`
             },
             {
                 role: 'user',
-                content: `The player chose: "${choice}"
-
-IMPORTANT: Start by showing this action happening in detail. Describe ${this.currentStory.character.name} performing this exact action, then show the consequences and reactions. Write at least 3-4 paragraphs describing the action and its immediate effects before moving to the next development.`
+                content: `The player chose: "${choiceText}"`
             }
         ];
         
         try {
-            const response = await this.callGPT(messages, 0.8, 2000);
-            const scene = this.parseScene(response);
+            const response = await this.callGPT(messages, 0.8, 1000);
             
-            // Check for duplicate options
-            const uniqueOptions = [...new Set(scene.options)];
-            if (uniqueOptions.length < scene.options.length) {
-                // Regenerate if we have duplicates
-                console.log('Duplicate options detected, regenerating...');
-                scene.options = await this.regenerateOptions(scene);
-            }
+            this.removeLastMessage();
+            this.displayNarrativeResponse(response);
             
-            this.currentScene = scene;
-            this.saveScene(scene);
-            this.displayScene(scene);
+            this.currentStory.sceneCount++;
             
         } catch (error) {
-            this.showError('Failed to continue narrative. Please try again.');
+            this.removeLastMessage();
+            this.addMessage('system', `Error: ${error.message}`);
         }
         
         this.isProcessing = false;
-        this.hideProcessing();
     }
     
-    async handleCustomAction(action) {
+    async sendAction() {
+        const input = document.getElementById('custom-input');
+        const action = input.value.trim();
+        
         if (!action || this.isProcessing) return;
         
-        this.isProcessing = true;
-        this.showProcessing('Weaving your action into the story...');
+        // Clear input
+        input.value = '';
+        input.style.height = 'auto';
         
-        const recentScenes = this.getRecentScenes(30); // 30 scenes instead of 3!
-        const contextSummary = this.buildContextSummary(recentScenes);
+        // Check if this is a choice selection
+        const choiceMatch = action.match(/^(\d)$/);
+        if (choiceMatch) {
+            const choiceNum = parseInt(choiceMatch[1]);
+            const choices = this.lastChoices;
+            if (choices && choices[choiceNum - 1]) {
+                this.handleChoice(choices[choiceNum - 1]);
+                return;
+            }
+        }
+        
+        // Custom action
+        this.addMessage('user', action);
+        
+        this.isProcessing = true;
+        this.addMessage('system', '<div class="loading"><span class="spinner"></span>Weaving your action into the story...</div>');
+        
+        const context = this.buildNarrativeContext();
         
         const messages = [
             {
                 role: 'system',
-                content: `You are a masterful storyteller. The player wants to take a custom action.
-Your response must be RICH, DETAILED, and at least 800-1200 words total.
+                content: `You are a Fantasy RPG Game Master creating a Virtue Seekers narrative.
 
-CRITICAL REQUIREMENTS:
-- Show the attempted action in extreme detail (4-5 paragraphs minimum)
-- If the action seems impossible, show the attempt and realistic consequences
-- Use cinematic description with all five senses
-- Build dramatic tension
+WORD COUNT: 500 words average.
 
-Structure your response:
+Context: ${context}
 
-[Setting]
-3-4 paragraphs of rich environmental context for the action.
+The player wants to take a custom action. Show the attempted action in detail.
+If the action seems impossible, show the attempt and realistic consequences.
 
-[Action]
-5-6 paragraphs showing the custom action:
-- First paragraph: The character prepares and begins
-- Next 3-4 paragraphs: Step-by-step execution with vivid detail
-- Final paragraph: Immediate results and reactions
-Show EVERYTHING - movements, expressions, environmental changes, sounds, sensations.
+Structure your response EXACTLY as follows:
 
-[Characters]
-2-3 paragraphs per character showing their full reactions.
+[Rich Environmental Description]
+2-3 paragraphs with multiple sensory details (light, temperature, sounds, smells). Include magical elements.
 
-[Dialogue]
-Natural responses to the action. Format: Name: (emotion) "Dialogue"
+[Character Positions and Actions]
+1 paragraph showing the custom action being attempted. Detail every step and movement.
 
-[Options]
-4 new distinct choices arising from this action.
+[Character Dialogue]
+Format: Name: (tone/expression) "Dialogue."
+Include reactions to the custom action.
 
-[Hook]
-1-2 paragraph cliffhanger.
+[Choice Presentation]
+Provide 2-5 new options arising from this action:
+1. [Action Option]: [Brief description]
+2. [Action Option]: [Brief description]
+3. [Action Option]: [Brief description]
 
-Protagonist: ${this.currentStory.character.name} the ${this.currentStory.character.class}
-Context: ${contextSummary}`
+[Scene-Closing Hook]
+1 paragraph ending with tension or revelation.`
             },
             {
                 role: 'user',
-                content: `The player attempts to: "${action}"
-
-Show ${this.currentStory.character.name} attempting this exact action. Describe it happening in detail over multiple paragraphs, then show the results.`
+                content: `I attempt to: ${action}`
             }
         ];
         
         try {
-            const response = await this.callGPT(messages, 0.8, 2000);
-            const scene = this.parseScene(response);
+            const response = await this.callGPT(messages, 0.8, 1000);
             
-            this.currentScene = scene;
-            this.saveScene(scene);
-            this.displayScene(scene);
-            
-            // Clear input
-            document.getElementById('custom-action-input').value = '';
+            this.removeLastMessage();
+            this.displayNarrativeResponse(response);
             
         } catch (error) {
-            this.showError('Failed to process custom action.');
+            this.removeLastMessage();
+            this.addMessage('system', `Error: ${error.message}`);
         }
         
         this.isProcessing = false;
-        this.hideProcessing();
     }
     
-    async regenerateScene() {
-        if (this.isProcessing || !this.lastContext) return;
+    displayNarrativeResponse(response) {
+        const sections = this.parseNarrativeResponse(response);
         
-        this.isProcessing = true;
-        this.showProcessing('Reweaving the narrative...');
+        let html = '<div class="narrative-content">';
         
-        try {
-            // Use higher temperature for more variation
-            const response = await this.callGPT(this.lastContext, 0.9, 2000);
-            const scene = this.parseScene(response);
-            
-            // Ensure unique options
-            const uniqueOptions = [...new Set(scene.options)];
-            if (uniqueOptions.length < scene.options.length) {
-                scene.options = await this.regenerateOptions(scene);
-            }
-            
-            this.currentScene = scene;
-            this.displayScene(scene);
-            
-            this.showSuccess('Scene regenerated with new possibilities!');
-            
-        } catch (error) {
-            this.showError('Failed to regenerate scene.');
+        // Environmental Description
+        if (sections.environmental) {
+            html += `
+                <div class="narrative-section">
+                    <div class="section-label">Environmental Description</div>
+                    <div class="section-content">${this.formatParagraphs(sections.environmental)}</div>
+                </div>
+            `;
         }
         
-        this.isProcessing = false;
-        this.hideProcessing();
-    }
-    
-    async regenerateOptions(scene) {
-        const messages = [
-            {
-                role: 'system',
-                content: 'Generate 4 completely different action options for the current scene. Each must be distinct and lead in a different direction. Format as a JSON array of strings.'
-            },
-            {
-                role: 'user',
-                content: `Current scene summary: ${scene.setting}\n\nGenerate 4 unique action options. Make them diverse: perhaps one combat, one social, one exploration, one creative/unexpected.`
-            }
-        ];
-        
-        try {
-            const response = await this.callGPT(messages, 0.9, 300);
-            const jsonMatch = response.match(/\[[\s\S]*\]/);
-            if (jsonMatch) {
-                return JSON.parse(jsonMatch[0]);
-            }
-        } catch (error) {
-            console.error('Option regeneration failed');
+        // Character Positioning
+        if (sections.positioning) {
+            html += `
+                <div class="narrative-section">
+                    <div class="section-label">Character Positioning</div>
+                    <div class="section-content">${this.formatParagraphs(sections.positioning)}</div>
+                </div>
+            `;
         }
         
-        // Fallback
-        return [
-            "Investigate the mysterious sounds coming from the shadows",
-            "Attempt to befriend the nearest character through conversation",
-            "Search the area for hidden passages or useful items",
-            "Use your class abilities in an unexpected way"
-        ];
+        // Dialogue
+        if (sections.dialogue && sections.dialogue.length > 0) {
+            html += `
+                <div class="narrative-section">
+                    <div class="section-label">Dialogue</div>
+                    <div class="dialogue-container">
+            `;
+            
+            sections.dialogue.forEach(line => {
+                html += `
+                    <div class="dialogue-box">
+                        <div class="dialogue-speaker">${line.speaker}</div>
+                        <div class="dialogue-tone">(${line.tone})</div>
+                        <div class="dialogue-text">${line.text}</div>
+                    </div>
+                `;
+                
+                // Auto-track NPCs from dialogue
+                this.trackNPCFromDialogue(line.speaker);
+            });
+            
+            html += '</div></div>';
+        }
+        
+        // Available Actions
+        if (sections.actions && sections.actions.length > 0) {
+            html += `
+                <div class="narrative-section">
+                    <div class="section-label">Available Actions</div>
+                    <div class="choices-grid">
+            `;
+            
+            sections.actions.forEach((action, i) => {
+                html += `
+                    <div class="choice-card" onclick="app.handleChoice('${action.replace(/'/g, "\\'")}')">
+                        <div class="choice-number">${i + 1}</div>
+                        <div class="choice-text">${action}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div></div>';
+            
+            // Store choices for keyboard shortcuts
+            this.lastChoices = sections.actions;
+        }
+        
+        // Scene Hook
+        if (sections.hook) {
+            html += `
+                <div class="narrative-section">
+                    <div class="section-label">Scene Hook</div>
+                    <div class="section-content" style="font-style: italic;">${this.formatParagraphs(sections.hook)}</div>
+                </div>
+            `;
+        }
+        
+        html += `
+            <button class="regenerate-button" onclick="app.regenerateScene()">
+                ↻ Regenerate Scene
+            </button>
+        </div>`;
+        
+        this.addMessage('assistant', html);
     }
     
-    // ============================================
-    // SCENE PARSING & DISPLAY
-    // ============================================
-    
-    parseScene(text) {
-        const scene = {
-            setting: '',
-            action: '',
-            characters: '',
+    parseNarrativeResponse(text) {
+        const sections = {
+            environmental: '',
+            positioning: '',
             dialogue: [],
-            options: [],
-            hook: '',
-            raw: text
+            actions: [],
+            hook: ''
         };
         
-        // Parse sections
-        const sections = text.split(/\[([^\]]+)\]/);
+        // Split by section headers
+        const parts = text.split(/\[([^\]]+)\]/);
         let currentSection = '';
         
-        for (let i = 0; i < sections.length; i++) {
-            const content = sections[i].trim();
+        for (let i = 0; i < parts.length; i++) {
+            const content = parts[i].trim();
             
-            if (content.match(/^Setting$/i)) {
-                currentSection = 'setting';
-            } else if (content.match(/^Action$/i)) {
-                currentSection = 'action';
-            } else if (content.match(/^Characters?$/i)) {
-                currentSection = 'characters';
-            } else if (content.match(/^Dialogue$/i)) {
+            if (content.match(/Environmental Description/i)) {
+                currentSection = 'environmental';
+            } else if (content.match(/Character Positioning/i)) {
+                currentSection = 'positioning';
+            } else if (content.match(/Dialogue/i)) {
                 currentSection = 'dialogue';
-            } else if (content.match(/^Options?$/i)) {
-                currentSection = 'options';
-            } else if (content.match(/^Hook$/i)) {
+            } else if (content.match(/Available Actions/i)) {
+                currentSection = 'actions';
+            } else if (content.match(/Scene Hook/i)) {
                 currentSection = 'hook';
             } else if (currentSection && content) {
                 switch (currentSection) {
-                    case 'setting':
-                        scene.setting = content;
+                    case 'environmental':
+                        sections.environmental = content;
                         break;
-                    case 'action':
-                        scene.action = content;
-                        break;
-                    case 'characters':
-                        scene.characters = content;
+                    case 'positioning':
+                        sections.positioning = content;
                         break;
                     case 'dialogue':
-                        // Parse dialogue lines
-                        const dialoguePattern = /([^:]+):\s*\(([^)]+)\)\s*"([^"]+)"/g;
-                        let match;
-                        while ((match = dialoguePattern.exec(content)) !== null) {
-                            scene.dialogue.push({
-                                speaker: match[1].trim(),
-                                tone: match[2].trim(),
-                                text: match[3].trim()
-                            });
-                        }
-                        break;
-                    case 'options':
-                        // Parse numbered options
-                        const lines = content.split('\n');
+                        // Parse dialogue lines with tone/expression
+                        const lines = content.split('\n').filter(line => line.trim());
                         lines.forEach(line => {
-                            const optionMatch = line.match(/^\d+\.\s*(.+)$/);
-                            if (optionMatch) {
-                                scene.options.push(optionMatch[1].trim());
+                            // Match format: Name: (tone) "text" or Name: (tone) text
+                            const match = line.match(/^([^:]+):\s*\(([^)]+)\)\s*"?(.+?)"?$/);
+                            if (match) {
+                                sections.dialogue.push({
+                                    speaker: match[1].trim().toUpperCase(),
+                                    tone: match[2].trim(),
+                                    text: match[3].trim().replace(/^"|"$/g, '')
+                                });
+                            }
+                        });
+                        break;
+                    case 'actions':
+                        // Parse numbered actions
+                        const actionLines = content.split('\n');
+                        actionLines.forEach(line => {
+                            const actionMatch = line.match(/^\d+\.\s*(.+)$/);
+                            if (actionMatch) {
+                                sections.actions.push(actionMatch[1].trim());
                             }
                         });
                         break;
                     case 'hook':
-                        scene.hook = content;
+                        sections.hook = content;
                         break;
                 }
             }
         }
         
-        // Ensure we have 4 options
-        while (scene.options.length < 4) {
-            scene.options.push(`Option ${scene.options.length + 1}`);
-        }
-        scene.options = scene.options.slice(0, 4);
-        
-        return scene;
-    }
-    
-    displayScene(scene) {
-        const content = document.getElementById('content-container');
-        
-        let html = '<div class="narrative-container">';
-        
-        // Setting section
-        if (scene.setting) {
-            html += `
-                <div class="narrative-section">
-                    <div class="environment-section">
-                        ${this.formatParagraphs(scene.setting)}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Action section
-        if (scene.action) {
-            html += `
-                <div class="narrative-section">
-                    <div class="scene-text">
-                        ${this.formatParagraphs(scene.action)}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Characters section
-        if (scene.characters) {
-            html += `
-                <div class="narrative-section">
-                    <div class="scene-text">
-                        ${this.formatParagraphs(scene.characters)}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Dialogue section
-        if (scene.dialogue && scene.dialogue.length > 0) {
-            html += '<div class="dialogue-container">';
-            scene.dialogue.forEach(line => {
-                html += `
-                    <div class="dialogue-line">
-                        <div class="speaker-name">${line.speaker}</div>
-                        <div class="speaker-tone">${line.tone}</div>
-                        <div class="dialogue-text">${line.text}</div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-        }
-        
-        // Hook section
-        if (scene.hook) {
-            html += `
-                <div class="narrative-section">
-                    <div class="scene-text" style="text-align: center; font-style: italic;">
-                        ${this.formatParagraphs(scene.hook)}
-                    </div>
-                </div>
-            `;
-        }
-        
-        html += '</div>';
-        
-        // Options
-        html += '<div class="choices-container">';
-        scene.options.forEach((option, i) => {
-            html += `
-                <div class="choice-card" onclick="app.handleChoice(${i + 1})">
-                    <span class="choice-number">${i + 1}</span>
-                    <span class="choice-text">${option}</span>
-                </div>
-            `;
-        });
-        html += '</div>';
-        
-        // Custom action
-        html += `
-            <div class="custom-action-container">
-                <div class="custom-action-label">Create Your Own Action</div>
-                <form class="custom-action-form" onsubmit="event.preventDefault(); app.submitCustomAction();">
-                    <input type="text" 
-                           id="custom-action-input" 
-                           class="custom-input" 
-                           placeholder="Describe what you want to do..."
-                           autocomplete="off">
-                    <button type="submit" class="action-button">Go</button>
-                </form>
-                <button class="regenerate-button" onclick="app.regenerateScene()">
-                    <span class="regenerate-icon">↻</span>
-                    Regenerate Scene
-                </button>
-            </div>
-        `;
-        
-        content.innerHTML = html;
-        
-        // Focus custom input
-        setTimeout(() => {
-            document.getElementById('custom-action-input')?.focus();
-        }, 100);
-        
-        // Smooth scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        this.updateSceneCounter();
+        return sections;
     }
     
     formatParagraphs(text) {
@@ -1629,106 +1517,503 @@ Show ${this.currentStory.character.name} attempting this exact action. Describe 
             .join('');
     }
     
-    submitCustomAction() {
-        const input = document.getElementById('custom-action-input');
-        const action = input.value.trim();
-        if (action) {
-            this.handleCustomAction(action);
+    async regenerateScene() {
+        if (this.isProcessing) return;
+        
+        // Find the last narrative message
+        const lastNarrative = [...this.messageHistory].reverse().find(msg => 
+            msg.role === 'assistant' && msg.content.includes('narrative-content')
+        );
+        
+        if (!lastNarrative) return;
+        
+        // Remove it
+        const index = this.messageHistory.indexOf(lastNarrative);
+        this.messageHistory.splice(index, 1);
+        this.displayMessageHistory();
+        
+        // Regenerate with higher temperature
+        this.isProcessing = true;
+        this.addMessage('system', '<div class="loading"><span class="spinner"></span>Reweaving the narrative...</div>');
+        
+        const context = this.buildNarrativeContext();
+        
+        const messages = [
+            {
+                role: 'system',
+                content: `Generate a DIFFERENT version of the current scene. Vary the events, dialogue, and choices significantly.
+                
+Context: ${context}
+
+Structure:
+[Environmental Description]
+[Character Positioning]
+[Dialogue]
+[Available Actions] - 4 completely different options
+[Scene Hook]`
+            },
+            {
+                role: 'user',
+                content: 'Generate an alternative version of this scene.'
+            }
+        ];
+        
+        try {
+            const response = await this.callGPT(messages, 0.95, 1000);
+            
+            this.removeLastMessage();
+            this.displayNarrativeResponse(response);
+            
+        } catch (error) {
+            this.removeLastMessage();
+            this.addMessage('system', `Error: ${error.message}`);
         }
+        
+        this.isProcessing = false;
     }
     
     // ============================================
-    // CONTEXT & MEMORY MANAGEMENT
+    // CONTEXT MANAGEMENT
     // ============================================
     
-    saveScene(scene) {
-        // Update story
-        this.currentStory.sceneCount++;
-        this.currentStory.lastSceneTime = Date.now();
-        this.saveToStorage(this.STORAGE_KEYS.CURRENT_STORY, this.currentStory);
+    buildNarrativeContext() {
+        if (!this.currentStory || !this.currentStory.character) return '';
         
-        // Save to scene history
-        let history = this.getFromStorage(this.STORAGE_KEYS.SCENE_HISTORY) || [];
-        history.push({
-            ...scene,
-            sceneNumber: this.currentStory.sceneCount,
-            timestamp: Date.now()
-        });
+        const char = this.currentStory.character;
+        const recentMessages = this.messageHistory.slice(-20); // Last 20 messages
         
-        // Keep only last 50 scenes
-        if (history.length > 50) {
-            history = history.slice(-50);
-        }
+        let context = `Character: ${char.name} the ${char.class}\n`;
+        context += `Traits: ${char.personality}, ${char.alignment}\n`;
+        context += `Loves: ${char.loves}, Hates: ${char.hates}\n\n`;
         
-        this.saveToStorage(this.STORAGE_KEYS.SCENE_HISTORY, history);
-        
-        // Update world state
-        this.updateWorldState(scene);
-    }
-    
-    updateWorldState(scene) {
-        const worldState = this.getFromStorage(this.STORAGE_KEYS.WORLD_STATE) || {
-            characters: {},
-            locations: {},
-            items: {},
-            facts: []
-        };
-        
-        // Extract character names from dialogue
-        if (scene.dialogue) {
-            scene.dialogue.forEach(line => {
-                if (!worldState.characters[line.speaker]) {
-                    worldState.characters[line.speaker] = {
-                        firstSeen: this.currentStory.sceneCount,
-                        lastSeen: this.currentStory.sceneCount
-                    };
-                } else {
-                    worldState.characters[line.speaker].lastSeen = this.currentStory.sceneCount;
+        // Add recent narrative events
+        const narrativeEvents = recentMessages
+            .filter(msg => msg.role === 'assistant' && msg.content.includes('narrative-content'))
+            .slice(-5); // Last 5 scenes
+            
+        if (narrativeEvents.length > 0) {
+            context += 'Recent Events:\n';
+            narrativeEvents.forEach((event, i) => {
+                const parsed = this.parseNarrativeResponse(event.content);
+                if (parsed.hook) {
+                    context += `- Scene ${i + 1}: ${parsed.hook.substring(0, 100)}...\n`;
                 }
             });
         }
         
-        this.saveToStorage(this.STORAGE_KEYS.WORLD_STATE, worldState);
-    }
-    
-    getRecentScenes(count = 5) {
-        const history = this.getFromStorage(this.STORAGE_KEYS.SCENE_HISTORY) || [];
-        return history.slice(-count);
-    }
-    
-    buildContextSummary(recentScenes) {
-        if (!recentScenes || recentScenes.length === 0) {
-            return 'This is the beginning of the story.';
+        // Add party members
+        if (this.partyMembers.length > 0) {
+            context += '\nParty Members:\n';
+            this.partyMembers.forEach(member => {
+                context += `- ${member.name} (${member.class}): ${member.status}\n`;
+            });
         }
         
-        const summaries = recentScenes.map(scene => {
-            let summary = `Scene ${scene.sceneNumber}: `;
-            if (scene.hook) {
-                summary += scene.hook;
-            } else if (scene.action) {
-                summary += scene.action.substring(0, 100) + '...';
-            }
-            return summary;
+        return context;
+    }
+    
+    // ============================================
+    // MESSAGE MANAGEMENT
+    // ============================================
+    
+    addMessage(role, content) {
+        const message = {
+            id: Date.now(),
+            role: role,
+            content: content,
+            timestamp: new Date().toISOString()
+        };
+        
+        this.messageHistory.push(message);
+        this.saveToStorage(this.STORAGE_KEYS.MESSAGE_HISTORY, this.messageHistory);
+        
+        // Add to UI
+        this.appendMessageToUI(message);
+        
+        // Scroll to bottom
+        this.scrollToBottom();
+    }
+    
+    appendMessageToUI(message) {
+        const container = document.getElementById('chat-messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${message.role}`;
+        messageDiv.dataset.messageId = message.id;
+        
+        const avatar = message.role === 'user' ? 'You' : 'VS';
+        const roleLabel = message.role === 'user' ? 'You' : 'Virtue Seekers';
+        
+        messageDiv.innerHTML = `
+            <div class="message-header">
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-role">${roleLabel}</div>
+            </div>
+            <div class="message-content">${message.content}</div>
+        `;
+        
+        container.appendChild(messageDiv);
+    }
+    
+    removeLastMessage() {
+        this.messageHistory.pop();
+        const messages = document.querySelectorAll('.message');
+        if (messages.length > 0) {
+            messages[messages.length - 1].remove();
+        }
+    }
+    
+    displayMessageHistory() {
+        const container = document.getElementById('chat-messages');
+        container.innerHTML = '';
+        
+        this.messageHistory.forEach(message => {
+            this.appendMessageToUI(message);
         });
         
-        return summaries.join(' | ');
+        this.scrollToBottom();
     }
     
-    updateSceneCounter() {
-        const counter = document.getElementById('scene-counter');
-        if (counter && this.currentStory) {
-            counter.textContent = `Scene ${this.currentStory.sceneCount}`;
+    clearChat() {
+        this.messageHistory = [];
+        document.getElementById('chat-messages').innerHTML = '';
+    }
+    
+    scrollToBottom() {
+        const container = document.getElementById('chat-container');
+        setTimeout(() => {
+            container.scrollTop = container.scrollHeight;
+        }, 100);
+    }
+    
+    // ============================================
+    // MENU FUNCTIONS
+    // ============================================
+    
+    showMenu() {
+        document.getElementById('menu-modal').classList.remove('hidden');
+    }
+    
+    hideMenu() {
+        document.getElementById('menu-modal').classList.add('hidden');
+    }
+    
+    toggleMenu() {
+        const menu = document.getElementById('menu-modal');
+        menu.classList.toggle('hidden');
+    }
+    
+    showCharacterSheet() {
+        if (!this.currentStory || !this.currentStory.character) {
+            alert('No character created yet');
+            return;
+        }
+        
+        const char = this.currentStory.character;
+        
+        const sheetHTML = `
+            <div class="character-sheet">
+                <h3 style="margin-bottom: 20px;">${char.name}'s Character Sheet</h3>
+                
+                <div class="character-stat-grid">
+                    <div class="stat-group">
+                        <div class="stat-label">Class</div>
+                        <div class="stat-value">${char.class}</div>
+                        <div class="stat-value" style="font-size: 12px; color: var(--text-secondary);">${char.classDescription}</div>
+                    </div>
+                    
+                    <div class="stat-group">
+                        <div class="stat-label">Traits</div>
+                        <div class="stat-value">Gender: ${char.gender}</div>
+                        <div class="stat-value">Alignment: ${char.alignment}</div>
+                        <div class="stat-value">Personality: ${char.personality}</div>
+                    </div>
+                    
+                    <div class="stat-group">
+                        <div class="stat-label">Equipment</div>
+                        <ul class="stat-list">
+                            <li>Armor: Starting gear</li>
+                            <li>Weapon: Class default</li>
+                            <li>Accessories: None</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="stat-group">
+                        <div class="stat-label">Skills & Abilities</div>
+                        <ul class="stat-list">
+                            <li>Class abilities developing...</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="stat-group">
+                        <div class="stat-label">Current Objectives</div>
+                        <ul class="stat-list">
+                            <li>Discover your purpose</li>
+                            <li>Explore the world</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="stat-group">
+                        <div class="stat-label">Personal Details</div>
+                        <div class="stat-value">Loves: ${char.loves}</div>
+                        <div class="stat-value">Hates: ${char.hates}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Replace menu content temporarily
+        const menuContent = document.querySelector('.menu-content');
+        const originalContent = menuContent.innerHTML;
+        
+        menuContent.innerHTML = `
+            <div class="menu-header">
+                <h2 class="menu-title">Character Sheet</h2>
+                <button class="close-button" onclick="app.hideMenu()">×</button>
+            </div>
+            ${sheetHTML}
+            <button class="menu-action" onclick="app.restoreMenu()" style="margin-top: 20px;">← Back to Menu</button>
+        `;
+    }
+    
+    showQuestJournal() {
+        const questHTML = this.questJournal.length > 0 
+            ? this.questJournal.map((quest, index) => `
+                <div class="stat-group" style="position: relative;">
+                    <button class="close-button" onclick="app.removeQuest(${index})" style="position: absolute; right: 0; top: 0; width: 24px; height: 24px; font-size: 16px;">×</button>
+                    <div class="stat-label">${quest.title}</div>
+                    <div class="stat-value">${quest.description}</div>
+                    <div class="stat-value" style="font-size: 12px; color: var(--text-tertiary);">Status: ${quest.status}</div>
+                    ${quest.objectives ? `
+                        <ul class="stat-list">
+                            ${quest.objectives.map(obj => `<li>${obj.completed ? '✓' : '○'} ${obj.text}</li>`).join('')}
+                        </ul>
+                    ` : ''}
+                </div>
+            `).join('')
+            : '<p style="color: var(--text-secondary);">No active quests. Your journey awaits...</p>';
+            
+        const menuContent = document.querySelector('.menu-content');
+        menuContent.innerHTML = `
+            <div class="menu-header">
+                <h2 class="menu-title">Quest Journal</h2>
+                <button class="close-button" onclick="app.hideMenu()">×</button>
+            </div>
+            <div class="character-sheet">
+                ${questHTML}
+            </div>
+            <button class="menu-action" onclick="app.restoreMenu()" style="margin-top: 20px;">← Back to Menu</button>
+        `;
+    }
+    
+    showRelationships() {
+        const relationshipHTML = Object.keys(this.relationships).length > 0 
+            ? Object.entries(this.relationships).map(([character, data]) => `
+                <div class="stat-group" style="position: relative;">
+                    <button class="close-button" onclick="app.removeRelationship('${character}')" style="position: absolute; right: 0; top: 0; width: 24px; height: 24px; font-size: 16px;">×</button>
+                    <div class="stat-label">${character.toUpperCase()}</div>
+                    <div class="stat-value">Status: ${data.status || 'Acquaintance'}</div>
+                    <div class="stat-value">Relationship: ${data.relationship || 'Neutral'}</div>
+                    ${data.notes ? `<div class="stat-value" style="font-size: 13px; color: var(--text-secondary);">${data.notes}</div>` : ''}
+                    ${data.firstMet ? `<div class="stat-value" style="font-size: 12px; color: var(--text-tertiary);">First met: Scene ${data.firstMet}</div>` : ''}
+                </div>
+            `).join('')
+            : '<p style="color: var(--text-secondary);">No relationships tracked yet. Meet some characters!</p>';
+            
+        const menuContent = document.querySelector('.menu-content');
+        menuContent.innerHTML = `
+            <div class="menu-header">
+                <h2 class="menu-title">Relationship Tracker</h2>
+                <button class="close-button" onclick="app.hideMenu()">×</button>
+            </div>
+            <div class="character-sheet">
+                ${relationshipHTML}
+            </div>
+            <button class="menu-action" onclick="app.restoreMenu()" style="margin-top: 20px;">← Back to Menu</button>
+        `;
+    }
+    
+    // Quest Management
+    addQuest(title, description, objectives = []) {
+        const quest = {
+            title,
+            description,
+            status: 'Active',
+            objectives: objectives.map(obj => ({ text: obj, completed: false })),
+            addedAt: this.currentStory?.sceneCount || 0
+        };
+        
+        this.questJournal.push(quest);
+        this.saveToStorage(this.STORAGE_KEYS.QUEST_JOURNAL, this.questJournal);
+    }
+    
+    updateQuest(title, updates) {
+        const questIndex = this.questJournal.findIndex(q => q.title === title);
+        if (questIndex !== -1) {
+            this.questJournal[questIndex] = { ...this.questJournal[questIndex], ...updates };
+            this.saveToStorage(this.STORAGE_KEYS.QUEST_JOURNAL, this.questJournal);
+        }
+    }
+    
+    removeQuest(index) {
+        this.questJournal.splice(index, 1);
+        this.saveToStorage(this.STORAGE_KEYS.QUEST_JOURNAL, this.questJournal);
+        this.showQuestJournal(); // Refresh the view
+    }
+    
+    // Relationship Management
+    addRelationship(character, status = 'Acquaintance', relationship = 'Neutral', notes = '') {
+        this.relationships[character.toLowerCase()] = {
+            status,
+            relationship,
+            notes,
+            firstMet: this.currentStory?.sceneCount || 0,
+            lastInteraction: this.currentStory?.sceneCount || 0
+        };
+        
+        this.saveToStorage(this.STORAGE_KEYS.RELATIONSHIPS, this.relationships);
+    }
+    
+    updateRelationship(character, updates) {
+        const key = character.toLowerCase();
+        if (this.relationships[key]) {
+            this.relationships[key] = { ...this.relationships[key], ...updates };
+            this.relationships[key].lastInteraction = this.currentStory?.sceneCount || 0;
+            this.saveToStorage(this.STORAGE_KEYS.RELATIONSHIPS, this.relationships);
+        } else {
+            // Create new relationship if it doesn't exist
+            this.addRelationship(character, updates.status, updates.relationship, updates.notes);
+        }
+    }
+    
+    removeRelationship(character) {
+        delete this.relationships[character.toLowerCase()];
+        this.saveToStorage(this.STORAGE_KEYS.RELATIONSHIPS, this.relationships);
+        this.showRelationships(); // Refresh the view
+    }
+    
+    // Track NPCs from dialogue
+    trackNPCFromDialogue(speaker) {
+        const key = speaker.toLowerCase();
+        if (!this.relationships[key] && speaker !== this.currentStory?.character?.name) {
+            this.addRelationship(speaker);
+        }
+    }
+    
+    restoreMenu() {
+        // Restore original menu
+        this.hideMenu();
+        setTimeout(() => this.showMenu(), 100);
+    }
+    
+    showPartyMembers() {
+        const partyHTML = this.partyMembers.length > 0 
+            ? this.partyMembers.map(member => `
+                <div class="stat-group">
+                    <div class="stat-label">${member.name}</div>
+                    <div class="stat-value">Class: ${member.class}</div>
+                    <div class="stat-value">Status: ${member.status}</div>
+                </div>
+            `).join('')
+            : '<p style="color: var(--text-secondary);">No party members yet. You adventure alone.</p>';
+            
+        const menuContent = document.querySelector('.menu-content');
+        menuContent.innerHTML = `
+            <div class="menu-header">
+                <h2 class="menu-title">Party Members</h2>
+                <button class="close-button" onclick="app.hideMenu()">×</button>
+            </div>
+            <div class="character-sheet">
+                ${partyHTML}
+            </div>
+            <button class="menu-action" onclick="app.restoreMenu()" style="margin-top: 20px;">← Back to Menu</button>
+        `;
+    }
+    
+    async exportStory() {
+        const storyData = {
+            character: this.currentStory,
+            messages: this.messageHistory,
+            partyMembers: this.partyMembers,
+            exportDate: new Date().toISOString()
+        };
+        
+        const blob = new Blob([JSON.stringify(storyData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `virtue-seekers-${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        this.hideMenu();
+        this.addMessage('system', 'Story exported successfully!');
+    }
+    
+    showStats() {
+        const stats = {
+            scenes: this.currentStory?.sceneCount || 0,
+            messages: this.messageHistory.length,
+            words: this.messageHistory.reduce((acc, msg) => acc + msg.content.split(' ').length, 0),
+            partySize: this.partyMembers.length + 1
+        };
+        
+        const menuContent = document.querySelector('.menu-content');
+        menuContent.innerHTML = `
+            <div class="menu-header">
+                <h2 class="menu-title">Story Statistics</h2>
+                <button class="close-button" onclick="app.hideMenu()">×</button>
+            </div>
+            <div class="character-sheet">
+                <div class="stat-group">
+                    <div class="stat-label">Scenes Completed</div>
+                    <div class="stat-value">${stats.scenes}</div>
+                </div>
+                <div class="stat-group">
+                    <div class="stat-label">Total Messages</div>
+                    <div class="stat-value">${stats.messages}</div>
+                </div>
+                <div class="stat-group">
+                    <div class="stat-label">Words Written</div>
+                    <div class="stat-value">${stats.words.toLocaleString()}</div>
+                </div>
+                <div class="stat-group">
+                    <div class="stat-label">Party Size</div>
+                    <div class="stat-value">${stats.partySize} adventurer${stats.partySize > 1 ? 's' : ''}</div>
+                </div>
+            </div>
+            <button class="menu-action" onclick="app.restoreMenu()" style="margin-top: 20px;">← Back to Menu</button>
+        `;
+    }
+    
+    changeApiKey() {
+        if (confirm('Change API key? This will not affect your current story.')) {
+            this.hideMenu();
+            this.showApiKeyPrompt();
+        }
+    }
+    
+    clearData() {
+        if (confirm('Start a new story? This will clear all current progress.')) {
+            this.clearChat();
+            this.currentStory = null;
+            this.partyMembers = [];
+            this.questJournal = [];
+            this.relationships = {};
+            this.saveToStorage(this.STORAGE_KEYS.MESSAGE_HISTORY, []);
+            this.saveToStorage(this.STORAGE_KEYS.CURRENT_STORY, null);
+            this.saveToStorage(this.STORAGE_KEYS.PARTY_MEMBERS, []);
+            this.saveToStorage(this.STORAGE_KEYS.QUEST_JOURNAL, []);
+            this.saveToStorage(this.STORAGE_KEYS.RELATIONSHIPS, {});
+            this.hideMenu();
+            this.startNewStory();
         }
     }
     
     // ============================================
-    // GPT API CALLS
+    // GPT API
     // ============================================
     
-    async callGPT(messages, temperature = 0.8, maxTokens = 8000) {
-        // Store context for regeneration
-        this.lastContext = messages;
-        
+    async callGPT(messages, temperature = 0.8, maxTokens = 1000) {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -1753,108 +2038,18 @@ Show ${this.currentStory.character.name} attempting this exact action. Describe 
         const data = await response.json();
         return data.choices[0].message.content;
     }
-    
-    // ============================================
-    // UI UTILITIES
-    // ============================================
-    
-    showLoading() {
-        document.getElementById('loading-container').classList.remove('hidden');
-        document.getElementById('app').classList.add('hidden');
-    }
-    
-    hideLoading() {
-        document.getElementById('loading-container').classList.add('hidden');
-        document.getElementById('app').classList.remove('hidden');
-    }
-    
-    showProcessing(message = 'Processing...') {
-        const overlay = document.createElement('div');
-        overlay.id = 'processing-overlay';
-        overlay.className = 'processing-overlay';
-        overlay.innerHTML = `
-            <div class="processing-card">
-                <div class="processing-spinner"></div>
-                <div class="processing-text">${message}</div>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-    }
-    
-    hideProcessing() {
-        const overlay = document.getElementById('processing-overlay');
-        if (overlay) overlay.remove();
-    }
-    
-    showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.style.animation = 'slideDown 0.3s reverse';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-    
-    showError(message) {
-        this.showToast(message, 'error');
-    }
-    
-    showSuccess(message) {
-        this.showToast(message, 'success');
-    }
 }
 
 // ============================================
-// INITIALIZE APP
+// INITIALIZE
 // ============================================
 
 let app = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🎮 DOM loaded, initializing Infinity Engine...');
-    
-    try {
-        app = new InfinityEngine();
-        
-        // Add to window for debugging
-        window.app = app;
-        
-        // Manually call initialize
-        app.initialize().catch(error => {
-            console.error('❌ Initialize failed:', error);
-            app.hideLoading();
-            app.showApiKeyPrompt();
-        });
-        
-        // Add a failsafe timeout
-        setTimeout(() => {
-            const loadingContainer = document.getElementById('loading-container');
-            if (loadingContainer && !loadingContainer.classList.contains('hidden')) {
-                console.log('⚠️ Loading timeout reached, forcing initialization...');
-                app.hideLoading();
-                app.showApiKeyPrompt();
-            }
-        }, 3000); // Force show something after 3 seconds
-        
-    } catch (error) {
-        console.error('❌ Failed to create app:', error);
-        // Force show error state
-        document.getElementById('loading-container').classList.add('hidden');
-        document.getElementById('app').classList.remove('hidden');
-        document.getElementById('content-container').innerHTML = `
-            <div style="text-align: center; padding: 50px;">
-                <h2 style="color: #ff453a;">Initialization Error</h2>
-                <p>Failed to start the Infinity Engine.</p>
-                <p style="color: #666; font-size: 14px;">${error.message}</p>
-                <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #0a84ff; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                    Refresh Page
-                </button>
-            </div>
-        `;
-    }
+    app = new VirtueSeekers();
+    window.app = app;
+    app.initialize();
 });
     </script>
 </body>
