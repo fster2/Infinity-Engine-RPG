@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <title>Virtue Seekers - PSP Edition</title>
+    
+    <!-- PSP-style Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ================================
+           PSP AESTHETIC THEME
+           ================================ */
+        :root {
+            --psp-black: #000000;
+            --psp-silver: #c0c0c0;
+            --psp-dark-silver: #808080;
+            --psp-screen-bg: #1a1a1a;
+            --psp-text: #ffffff;
+            --psp-highlight: #00ff00;
+            --psp-button-bg: #2a2a2a;
+            --psp-button-border: #404040;
+            --psp-x-button: #0099ff;
+            --psp-circle-button: #ff0066;
+            --psp-square-button: #ff00ff;
+            --psp-triangle-button: #00ff00;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background: var(--psp-black);
+            color: var(--psp-text);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* PSP Screen Frame */
+        #psp-frame {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* PSP Top Bar */
+        .psp-top-bar {
+            background: linear-gradient(90deg, var(--psp-dark-silver) 0%, var(--psp-silver) 50%, var(--psp-dark-silver) 100%);
+            height: 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            color: var(--psp-black);
+            font-weight: 700;
+        }
+
+        .battery-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .battery-bar {
+            width: 25px;
+            height: 12px;
+            border: 2px solid var(--psp-black);
+            border-radius: 2px;
+            position: relative;
+            background: var(--psp-black);
+        }
+
+        .battery-fill {
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            bottom: 1px;
+            right: 1px;
+            background: var(--psp-highlight);
+            border-radius: 1px;
+        }
+
+        /* Main Screen Area */
+        #game-screen {
+            flex: 1;
+            background: var(--psp-screen-bg);
+            border: 3px solid var(--psp-dark-silver);
+            border-radius: 10px;
+            overflow-y: auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--psp-black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .psp-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(180deg, var(--psp-silver) 0%, var(--psp-dark-silver) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: var(--psp-highlight);
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Environmental Description */
+        .environment-description {
+            border-left: 3px solid var(--psp-highlight);
+            padding-left: 15px;
+            margin-bottom: 20px;
+            color: var(--psp-silver);
+            font-style: italic;
+        }
+
+        /* Character Positions */
+        .character-positions {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--psp-button-border);
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .position-entry {
+            margin: 8px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .position-character {
+            color: var(--psp-highlight);
+            font-weight: bold;
+            min-width: 100px;
+        }
+
+        /* Dialogue */
+        .dialogue-section {
+            margin: 20px 0;
+        }
+
+        .dialogue-line {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+
+        .character-name {
+            color: var(--psp-x-button);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .character-tone {
+            color: var(--psp-dark-silver);
+            font-size: 0.9em;
+        }
+
+        .dialogue-text {
+            display: block;
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+
+        /* PSP-style Choice Buttons */
+        .choice-container {
+            margin: 25px 0;
+        }
+
+        .choice-button {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            margin: 12px 0;
+            background: linear-gradient(180deg, #3a3a3a 0%, #1a1a1a 100%);
+            border: 2px solid var(--psp-button-border);
+            border-radius: 25px;
+            color: var(--psp-text);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .choice-button:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--psp-x-button);
+            opacity: 0.7;
+        }
+
+        .choice-button:nth-child(2):before { background: var(--psp-circle-button); }
+        .choice-button:nth-child(3):before { background: var(--psp-square-button); }
+        .choice-button:nth-child(4):before { background: var(--psp-triangle-button); }
+
+        .choice-button:hover {
+            border-color: var(--psp-highlight);
+            transform: translateX(5px);
+        }
+
+        .choice-button:active {
+            transform: translateX(5px) scale(0.98);
+        }
+
+        .choice-number {
+            color: var(--psp-highlight);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Custom Action */
+        .custom-action {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--psp-button-border);
+        }
+
+        .custom-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--psp-dark-silver);
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .custom-input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .custom-input {
+            flex: 1;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--psp-button-border);
+            border-radius: 5px;
+            color: var(--psp-text);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: var(--psp-highlight);
+        }
+
+        .custom-submit {
+            padding: 12px 24px;
+            background: linear-gradient(180deg, var(--psp-highlight) 0%, #00cc00 100%);
+            border: none;
+            border-radius: 20px;
+            color: var(--psp-black);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .custom-submit:hover {
+            transform: scale(1.05);
+        }
+
+        /* Scene Hook */
+        .scene-hook {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 0, 0.1) 100%);
+            border-top: 1px solid var(--psp-highlight);
+            text-align: center;
+            font-style: italic;
+            color: var(--psp-silver);
+        }
+
+        /* Character Creation */
+        .character-creation {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .creation-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--psp-highlight);
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .creation-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--psp-button-border);
+            border-radius: 5px;
+            color: var(--psp-text);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .continue-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(180deg, var(--psp-x-button) 0%, #0066cc 100%);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .continue-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0, 153, 255, 0.5);
+        }
+
+        /* API Key Screen */
+        .api-key-prompt {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 2px solid var(--psp-button-border);
+            border-radius: 10px;
+        }
+
+        .api-key-input {
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        /* Messages */
+        .message {
+            padding: 12px 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .message.error {
+            background: rgba(255, 0, 102, 0.2);
+            border: 1px solid var(--psp-circle-button);
+            color: var(--psp-circle-button);
+        }
+
+        .message.success {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid var(--psp-highlight);
+            color: var(--psp-highlight);
+        }
+
+        /* Setup Error Screen */
+        .setup-error {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 0, 102, 0.1);
+            border: 2px solid var(--psp-circle-button);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .setup-error h2 {
+            color: var(--psp-circle-button);
+            margin-bottom: 20px;
+        }
+
+        .setup-error p {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+
+        .setup-error a {
+            color: var(--psp-highlight);
+            text-decoration: none;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            body { font-size: 14px; }
+            .psp-logo { font-size: 36px; }
+            .creation-title { font-size: 20px; }
+            #psp-frame { padding: 10px; }
+        }
+
+        /* Hide scrollbar but keep functionality */
+        #game-screen::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="psp-logo">VIRTUE SEEKERS</div>
+        <div class="loading-text">MEMORY PALACE INITIALIZING...</div>
+    </div>
+
+    <!-- Main PSP Frame -->
+    <div id="psp-frame" class="hidden">
+        <!-- PSP Top Bar -->
+        <div class="psp-top-bar">
+            <div class="memory-status">MEMORY: <span id="memory-percent">100%</span></div>
+            <div>SCENE <span id="scene-counter">1</span></div>
+            <div class="battery-indicator">
+                <div class="battery-bar">
+                    <div class="battery-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen">
+            <!-- Dynamic content goes here -->
+        </div>
+    </div>
+
+    <script>
+// ============================================
+// COMPLETE VIRTUE SEEKERS ENGINE - PSP EDITION
+// ============================================
+
+// Global app instance
+let app = null;
+
+// ============================================
+// MEMORY PALACE - Using localStorage fallback
+// ============================================
+class MemoryPalace {
+    constructor() {
+        this.storageAvailable = false;
+        this.currentStory = null;
+        this.memoryPrefix = 'vs_';
+    }
+
+    async initialize() {
+        // Check if we can use localStorage
+        try {
+            const test = 'test';
+            localStorage.setItem(test, test);
+            localStorage.removeItem(test);
+            this.storageAvailable = true;
+            console.log('Using localStorage for memory');
+        } catch (e) {
+            console.log('No storage available - using session memory only');
+            this.storageAvailable = false;
+            // Use in-memory storage
+            this.memoryStore = {
+                stories: [],
+                scenes: [],
+                characters: {},
+                settings: {}
+            };
+        }
+    }
+
+    // Storage abstraction methods
+    setItem(key, value) {
+        const fullKey = this.memoryPrefix + key;
+        if (this.storageAvailable) {
+            localStorage.setItem(fullKey, JSON.stringify(value));
+        } else {
+            if (!this.memoryStore) this.memoryStore = {};
+            this.memoryStore[fullKey] = value;
+        }
+    }
+
+    getItem(key) {
+        const fullKey = this.memoryPrefix + key;
+        if (this.storageAvailable) {
+            const item = localStorage.getItem(fullKey);
+            return item ? JSON.parse(item) : null;
+        } else {
+            return this.memoryStore?.[fullKey] || null;
+        }
+    }
+
+    async createNewStory(characterData) {
+        const story = {
+            id: `story_${Date.now()}`,
+            created: new Date().toISOString(),
+            protagonist: characterData,
+            sceneCount: 0
+        };
+        
+        this.currentStory = story;
+        this.setItem('current_story', story);
+        
+        // Save to story list
+        const stories = this.getItem('stories') || [];
+        stories.push(story);
+        this.setItem('stories', stories);
+        
+        return story;
+    }
+
+    async saveScene(scene) {
+        if (!this.currentStory) return;
+        
+        scene.id = `scene_${Date.now()}`;
+        scene.storyId = this.currentStory.id;
+        
+        // Save scene
+        const scenes = this.getItem('scenes') || [];
+        scenes.push(scene);
+        this.setItem('scenes', scenes);
+        
+        // Update story
+        this.currentStory.sceneCount++;
+        this.currentStory.lastScene = scene;
+        this.setItem('current_story', this.currentStory);
+        
+        // Update story in list
+        const stories = this.getItem('stories') || [];
+        const storyIndex = stories.findIndex(s => s.id === this.currentStory.id);
+        if (storyIndex !== -1) {
+            stories[storyIndex] = this.currentStory;
+            this.setItem('stories', stories);
+        }
+    }
+
+    async saveApiKey(apiKey) {
+        this.setItem('api_key', apiKey);
+    }
+
+    async getApiKey() {
+        return this.getItem('api_key');
+    }
+
+    async getCurrentStory() {
+        if (this.currentStory) return this.currentStory;
+        
+        this.currentStory = this.getItem('current_story');
+        return this.currentStory;
+    }
+
+    async getRecentScenes(count = 5) {
+        if (!this.currentStory) return [];
+        
+        const scenes = this.getItem('scenes') || [];
+        return scenes
+            .filter(s => s.storyId === this.currentStory.id)
+            .slice(-count);
+    }
+
+    async updateCharacter(name, data) {
+        const characters = this.getItem('characters') || {};
+        characters[name.toLowerCase()] = {
+            name: name,
+            ...data,
+            lastUpdated: Date.now()
+        };
+        this.setItem('characters', characters);
+    }
+
+    async getCharacter(name) {
+        const characters = this.getItem('characters') || {};
+        return characters[name.toLowerCase()];
+    }
+}
+
+// ============================================
+// NARRATIVE ENGINE
+// ============================================
+class NarrativeEngine {
+    constructor() {
+        this.apiKey = null;
+        this.apiUrl = 'https://api.openai.com/v1/chat/completions';
+    }
+
+    setApiKey(key) {
+        this.apiKey = key;
+    }
+
+    async generateScene(context) {
+        const messages = [
+            {
+                role: 'system',
+                content: `You are a Fantasy RPG Game Master. EVERY response must include these sections:
+
+[Environmental Description]
+2-3 sentences with sensory details and magical atmosphere.
+
+[Character Positions]
+Where each character is and what they're doing.
+
+[Dialogue]
+Format: Name: (emotion) "What they say."
+
+[Choices]
+2-5 numbered options that lead to different outcomes.
+
+[Scene Hook]
+1-2 sentences creating anticipation.
+
+Current protagonist: ${context.protagonist?.name || 'Unknown'}
+Class: ${context.protagonist?.class || 'Unknown'}
+Recent events: ${context.recentEvents || 'Beginning of story'}`
+            },
+            {
+                role: 'user',
+                content: context.userInput
+            }
+        ];
+
+        try {
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo',
+                    messages: messages,
+                    temperature: 0.8,
+                    max_tokens: 800
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
+
+            const data = await response.json();
+            return data.choices[0].message.content;
+        } catch (error) {
+            console.error('GPT error:', error);
+            throw error;
+        }
+    }
+}
+
+// ============================================
+// UI MANAGER
+// ============================================
+class UIManager {
+    constructor() {
+        this.gameScreen = null;
+        this.sceneCounter = null;
+        this.memoryPercent = null;
+    }
+
+    initialize() {
+        this.gameScreen = document.getElementById('game-screen');
+        this.sceneCounter = document.getElementById('scene-counter');
+        this.memoryPercent = document.getElementById('memory-percent');
+    }
+
+    hideLoading() {
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('psp-frame').classList.remove('hidden');
+    }
+
+    showSetupError() {
+        this.gameScreen.innerHTML = `
+            <div class="setup-error">
+                <h2>⚠️ SETUP REQUIRED ⚠️</h2>
+                <p>This game can't run directly from your computer!</p>
+                <p>You need to put it online first. Here's the easiest way:</p>
+                
+                <h3 style="color: #00ff00; margin: 20px 0;">Option 1: Netlify (30 seconds)</h3>
+                <ol style="text-align: left; margin: 0 auto; max-width: 400px;">
+                    <li>Save this file to your computer</li>
+                    <li>Go to <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a></li>
+                    <li>Drag the file onto the page</li>
+                    <li>Get instant URL!</li>
+                </ol>
+                
+                <h3 style="color: #00ff00; margin: 20px 0;">Option 2: GitHub (5 minutes)</h3>
+                <p>Follow the guide in the instructions</p>
+                
+                <p style="margin-top: 30px; color: #ff0066;">
+                    This error happens because the game needs to save your progress,<br>
+                    which browsers don't allow for local files.
+                </p>
+            </div>
+        `;
+    }
+
+    async showApiKeyPrompt() {
+        this.gameScreen.innerHTML = `
+            <div class="api-key-prompt">
+                <h2 class="creation-title">OpenAI API Key Required</h2>
+                <p style="margin-bottom: 20px; color: #c0c0c0;">
+                    Enter your API key to power the narrative engine.
+                </p>
+                <input type="password" 
+                       id="api-key-input" 
+                       class="creation-input api-key-input" 
+                       placeholder="sk-..."
+                       autocomplete="off">
+                <button class="continue-button" onclick="app.submitApiKey()">
+                    Initialize Engine
+                </button>
+                <p style="margin-top: 20px; font-size: 12px; text-align: center;">
+                    <a href="https://platform.openai.com/api-keys" 
+                       target="_blank" 
+                       style="color: #00ff00;">
+                        Get API Key →
+                    </a>
+                </p>
+            </div>
+        `;
+    }
+
+    async showCharacterCreation() {
+        const character = {};
+        
+        // Name step
+        await this.showNameStep(character);
+        await this.showClassStep(character);
+        
+        return character;
+    }
+
+    showNameStep(character) {
+        return new Promise((resolve) => {
+            this.gameScreen.innerHTML = `
+                <div class="character-creation">
+                    <h2 class="creation-title">Enter Your Name</h2>
+                    <input type="text" 
+                           id="character-name" 
+                           class="creation-input" 
+                           placeholder="Your name..."
+                           maxlength="20">
+                    <button class="continue-button" id="continue-name">
+                        Continue
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('continue-name').onclick = () => {
+                const name = document.getElementById('character-name').value.trim();
+                if (name) {
+                    character.name = name;
+                    resolve();
+                }
+            };
+        });
+    }
+
+    showClassStep(character) {
+        return new Promise((resolve) => {
+            const classes = [
+                { name: "Glass Sovereign", desc: "Master of crystalline magic" },
+                { name: "Ink Mage", desc: "Weaver of written reality" },
+                { name: "Thornkeeper", desc: "Guardian of ancient groves" },
+                { name: "Voidwhisper", desc: "Speaker to the spaces between" }
+            ];
+            
+            this.gameScreen.innerHTML = `
+                <div class="character-creation">
+                    <h2 class="creation-title">Choose Your Path</h2>
+                    ${classes.map((c, i) => `
+                        <button class="choice-button" onclick="app.selectClass('${c.name}')">
+                            <span class="choice-number">${i+1}.</span>
+                            <strong>${c.name}</strong> - ${c.desc}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            
+            window.app.selectClass = (className) => {
+                character.class = className;
+                character.personality = "mysterious and determined";
+                character.appearance = "A figure of power and purpose";
+                character.background = "A seeker of ancient truths";
+                resolve();
+            };
+        });
+    }
+
+    displayScene(scene) {
+        const parsed = this.parseScene(scene);
+        
+        this.gameScreen.innerHTML = `
+            ${this.formatEnvironment(parsed.environment)}
+            ${this.formatPositions(parsed.positions)}
+            ${this.formatDialogue(parsed.dialogue)}
+            ${this.formatChoices(parsed.choices)}
+            ${this.formatHook(parsed.hook)}
+            ${this.formatCustomAction()}
+        `;
+        
+        // Update scene counter
+        const story = app.memoryPalace.currentStory;
+        if (story) {
+            this.sceneCounter.textContent = story.sceneCount + 1;
+        }
+    }
+
+    parseScene(text) {
+        const scene = {
+            environment: '',
+            positions: {},
+            dialogue: [],
+            choices: [],
+            hook: ''
+        };
+        
+        // Simple parsing
+        const sections = text.split(/\[([^\]]+)\]/);
+        let currentSection = '';
+        
+        for (let i = 0; i < sections.length; i++) {
+            const content = sections[i].trim();
+            
+            if (content.match(/Environmental Description/i)) {
+                currentSection = 'environment';
+            } else if (content.match(/Character Positions/i)) {
+                currentSection = 'positions';
+            } else if (content.match(/Dialogue/i)) {
+                currentSection = 'dialogue';
+            } else if (content.match(/Choices/i)) {
+                currentSection = 'choices';
+            } else if (content.match(/Scene.*Hook/i)) {
+                currentSection = 'hook';
+            } else if (currentSection && content) {
+                switch (currentSection) {
+                    case 'environment':
+                        scene.environment = content;
+                        break;
+                    case 'positions':
+                        content.split('\n').forEach(line => {
+                            if (line.includes(':')) {
+                                const [char, pos] = line.split(':');
+                                scene.positions[char.trim()] = pos.trim();
+                            }
+                        });
+                        break;
+                    case 'dialogue':
+                        const dialoguePattern = /([^:]+):\s*\(([^)]+)\)\s*"([^"]+)"/g;
+                        let match;
+                        while ((match = dialoguePattern.exec(content)) !== null) {
+                            scene.dialogue.push({
+                                character: match[1].trim(),
+                                tone: match[2].trim(),
+                                text: match[3].trim()
+                            });
+                        }
+                        break;
+                    case 'choices':
+                        content.split(/\d+\./).forEach(choice => {
+                            if (choice.trim()) {
+                                scene.choices.push(choice.trim());
+                            }
+                        });
+                        break;
+                    case 'hook':
+                        scene.hook = content;
+                        break;
+                }
+            }
+        }
+        
+        return scene;
+    }
+
+    formatEnvironment(text) {
+        if (!text) return '';
+        return `<div class="environment-description">${text}</div>`;
+    }
+
+    formatPositions(positions) {
+        if (!positions || Object.keys(positions).length === 0) return '';
+        
+        const entries = Object.entries(positions).map(([char, pos]) => `
+            <div class="position-entry">
+                <span class="position-character">${char}:</span>
+                <span>${pos}</span>
+            </div>
+        `).join('');
+        
+        return `<div class="character-positions">${entries}</div>`;
+    }
+
+    formatDialogue(dialogue) {
+        if (!dialogue || dialogue.length === 0) return '';
+        
+        const lines = dialogue.map(line => `
+            <div class="dialogue-line">
+                <span class="character-name">${line.character}:</span>
+                <span class="character-tone">(${line.tone})</span>
+                <span class="dialogue-text">${line.text}</span>
+            </div>
+        `).join('');
+        
+        return `<div class="dialogue-section">${lines}</div>`;
+    }
+
+    formatChoices(choices) {
+        if (!choices || choices.length === 0) return '';
+        
+        const buttons = choices.map((choice, i) => `
+            <button class="choice-button" onclick="app.handleChoice(${i + 1})">
+                <span class="choice-number">${i + 1}.</span>
+                ${choice}
+            </button>
+        `).join('');
+        
+        return `<div class="choice-container">${buttons}</div>`;
+    }
+
+    formatHook(text) {
+        if (!text) return '';
+        return `<div class="scene-hook">${text}</div>`;
+    }
+
+    formatCustomAction() {
+        return `
+            <div class="custom-action">
+                <label class="custom-label">Custom Action:</label>
+                <div class="custom-input-wrapper">
+                    <input type="text" 
+                           id="custom-action" 
+                           class="custom-input" 
+                           placeholder="Describe your action..."
+                           onkeypress="if(event.key==='Enter') app.handleCustom()">
+                    <button class="custom-submit" onclick="app.handleCustom()">
+                        GO
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'message error';
+        errorDiv.textContent = message;
+        this.gameScreen.insertBefore(errorDiv, this.gameScreen.firstChild);
+        setTimeout(() => errorDiv.remove(), 5000);
+    }
+
+    showProcessing() {
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(b => b.disabled = true);
+    }
+
+    hideProcessing() {
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(b => b.disabled = false);
+    }
+}
+
+// ============================================
+// MAIN APPLICATION
+// ============================================
+class VirtueSeekersApp {
+    constructor() {
+        this.memoryPalace = new MemoryPalace();
+        this.narrativeEngine = new NarrativeEngine();
+        this.ui = new UIManager();
+        this.currentScene = null;
+    }
+
+    async initialize() {
+        try {
+            await this.memoryPalace.initialize();
+            this.ui.initialize();
+            
+            // Check if we're running from file://
+            if (window.location.protocol === 'file:') {
+                this.ui.hideLoading();
+                this.ui.showSetupError();
+                return;
+            }
+            
+            // Check for API key
+            const apiKey = await this.memoryPalace.getApiKey();
+            if (!apiKey) {
+                this.ui.hideLoading();
+                await this.ui.showApiKeyPrompt();
+                return;
+            }
+            
+            this.narrativeEngine.setApiKey(apiKey);
+            
+            // Check for existing story
+            const story = await this.memoryPalace.getCurrentStory();
+            if (story) {
+                await this.resumeStory();
+            } else {
+                await this.startNewStory();
+            }
+            
+            this.ui.hideLoading();
+            
+        } catch (error) {
+            console.error('Init error:', error);
+            this.ui.hideLoading();
+            this.ui.showSetupError();
+        }
+    }
+
+    async submitApiKey() {
+        const input = document.getElementById('api-key-input');
+        const apiKey = input.value.trim();
+        
+        if (apiKey && apiKey.startsWith('sk-')) {
+            await this.memoryPalace.saveApiKey(apiKey);
+            this.narrativeEngine.setApiKey(apiKey);
+            await this.startNewStory();
+        } else {
+            this.ui.showError('Invalid API key format');
+        }
+    }
+
+    async startNewStory() {
+        const character = await this.ui.showCharacterCreation();
+        await this.memoryPalace.createNewStory(character);
+        
+        // Generate opening scene
+        const context = {
+            protagonist: character,
+            userInput: `Begin the story. ${character.name} the ${character.class} arrives at a mystical location. Introduce an intriguing NPC and present choices.`
+        };
+        
+        this.ui.showProcessing();
+        try {
+            const scene = await this.narrativeEngine.generateScene(context);
+            await this.displayAndSaveScene(scene);
+        } catch (error) {
+            this.ui.showError('Failed to generate scene. Check your API key.');
+        }
+        this.ui.hideProcessing();
+    }
+
+    async resumeStory() {
+        const story = await this.memoryPalace.getCurrentStory();
+        const recentScenes = await this.memoryPalace.getRecentScenes();
+        
+        if (story.lastScene) {
+            this.ui.displayScene(story.lastScene.text);
+        } else {
+            await this.generateContinuation();
+        }
+    }
+
+    async handleChoice(choiceNum) {
+        if (!this.currentScene) return;
+        
+        const choice = this.currentScene.choices[choiceNum - 1];
+        if (!choice) return;
+        
+        this.ui.showProcessing();
+        
+        const context = {
+            protagonist: this.memoryPalace.currentStory.protagonist,
+            recentEvents: `Player chose: "${choice}"`,
+            userInput: `Continue the narrative based on this choice: "${choice}"`
+        };
+        
+        try {
+            const scene = await this.narrativeEngine.generateScene(context);
+            await this.displayAndSaveScene(scene);
+        } catch (error) {
+            this.ui.showError('Failed to continue narrative');
+        }
+        
+        this.ui.hideProcessing();
+    }
+
+    async handleCustom() {
+        const input = document.getElementById('custom-action');
+        const action = input.value.trim();
+        
+        if (!action) return;
+        
+        this.ui.showProcessing();
+        
+        const context = {
+            protagonist: this.memoryPalace.currentStory.protagonist,
+            recentEvents: `Player performs custom action: "${action}"`,
+            userInput: `The player attempts: "${action}". Show the results of this action.`
+        };
+        
+        try {
+            const scene = await this.narrativeEngine.generateScene(context);
+            await this.displayAndSaveScene(scene);
+            input.value = '';
+        } catch (error) {
+            this.ui.showError('Failed to process action');
+        }
+        
+        this.ui.hideProcessing();
+    }
+
+    async displayAndSaveScene(sceneText) {
+        const parsed = this.ui.parseScene(sceneText);
+        this.currentScene = parsed;
+        
+        await this.memoryPalace.saveScene({
+            text: sceneText,
+            parsed: parsed,
+            timestamp: Date.now()
+        });
+        
+        this.ui.displayScene(sceneText);
+        
+        // Update memory indicator
+        const percent = Math.max(50, 100 - (this.memoryPalace.currentStory.sceneCount * 0.5));
+        this.ui.memoryPercent.textContent = `${Math.round(percent)}%`;
+    }
+
+    async generateContinuation() {
+        const context = {
+            protagonist: this.memoryPalace.currentStory.protagonist,
+            userInput: "Continue the story from where we left off."
+        };
+        
+        this.ui.showProcessing();
+        try {
+            const scene = await this.narrativeEngine.generateScene(context);
+            await this.displayAndSaveScene(scene);
+        } catch (error) {
+            this.ui.showError('Failed to continue story');
+        }
+        this.ui.hideProcessing();
+    }
+}
+
+// ============================================
+// INITIALIZE ON LOAD
+// ============================================
+document.addEventListener('DOMContentLoaded', async () => {
+    app = new VirtueSeekersApp();
+    await app.initialize();
+});
+
+// Make app accessible globally for onclick handlers
+window.app = app;
+    </script>
+</body>
+</html>
